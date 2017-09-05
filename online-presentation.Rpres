@@ -1,28 +1,32 @@
-Ethics in Big Data and Machine Learning
+Ethics in Machine Learning
 ========================================================
 author: Brian Detweiler
-date: 
+date: October 30th, 2017
 autosize: true
 
-First Slide
+Machine Learning - Living in the Future
+========================================================
+ - 
+
+Case Study 1
 ========================================================
 
-For more details on authoring R presentations please visit <https://support.rstudio.com/hc/en-us/articles/200486468>.
+Case Study 2
+========================================================
 
-- Bullet 1
-- Bullet 2
-- Bullet 3
-
-Slide With Code
+Why We Need Ethics
 ========================================================
 
 ```{r}
 summary(cars)
 ```
 
-Slide With Plot
+The Current State of Ethics Education
 ========================================================
 
 ```{r, echo=FALSE}
 plot(cars)
 ```
+
+A Recommendation
+========================================================

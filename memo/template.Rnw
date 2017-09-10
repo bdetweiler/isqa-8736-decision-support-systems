@@ -2,7 +2,10 @@
 % Using the texMemo package by Rob Oakes
 \documentclass[a4paper,11pt]{texMemo}
 \usepackage[english]{babel}
-\usepackage{graphicx, lipsum}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{lipsum}
+\usepackage[font=small,labelfont=bf]{caption}
 
 %% Edit the header section here. To include your
 %% own logo, upload a file via the files menu.
@@ -15,8 +18,50 @@
 \begin{document}
 \maketitle
 
-%% Write your memo text here, and delete \lipsum
-%% to remove the placeholder text.
+\section{A Need for Standardization}
+
 \lipsum
+
+\section{What This Means for Suite Spot and for You}
+
+\lipsum
+
+\section{Building a Data Warehouse}
+
+One of the major benefits to standardized data definitions is improved visibility over all of Suite Spot's reservations via data warehousing.
+You may have heard the phrase, "data is the new oil", and that is no exception for Suite Spot. We have hired data analysts to help us improve
+sales by analyzing our advertising efforts under various market conditions. Their analysis is only as good as the data we have, and we have
+found that the current state of disperate data systems across our hotel chains make data warehousing impractical at best, and infeasible at worst.
+
+It is essential for Suite Spot to have a centralized analytics repository. For our chain to grow, we must know our customer base. With a centralized
+data warehouse, we can apply data mining techniques to uncover hidden predictors in customer behavior.
+
+Under the current infrastructure, we are performing analytics on our OLTP (Online Transaction Processing) databases, and we have found that as
+we continue to scale up, this is putting a dangerous load on our production systems, causing customer transactions to slow down and even fail at times. 
+The solution to this is to use a real-time data integration and replecation to a centralized data warehouse. \cite{goldengate} 
+
+By moving analytics off of our production systems and into a data warehouse, we gain two major benefits; the load of analytics processing will be
+isolated from the transaction processing sytems, and all of the analytics can be performed in one place on a single dataset. In addition to finding
+opportunities for growth in various markets, there may also be opportunities to reduce our operating ratio. A study done by Forbes found that
+the majority of companies reported losses of more than \$5 million annually due to data-related issues. The same study found fragmented data
+ownership to be the single biggest roadblock to an enterprise information management program. \cite{enterprise}
+
+We acknowledge that there will be challenges up front during this initiative, but we feel that the benefits are too great to put it off any longer.
+With a data warehouse collecting all of our real time booking reservations, we can slice the data by varios dimensions. For instance, we 
+can see what third-party booking site is sending us the most business and then correlate that with holidays, discounts, and advertising campaigns.
+We'll be able to see what hotels stand out with high sales, and determine what we're doing right and likewise, which locations are lagging, as there
+may be opportunities for improvement.
+
+\includegraphics[width=1\textwidth]{suite-spot-star-schema.png}
+\captionof{figure}{Data Warehouse star schema}
+
+\section{Recommendations}
+
+\lipsum
+
+%Sets the bibliography style to UNSRT and imports the 
+%bibliography file "samples.bib".
+\bibliographystyle{unsrt}
+\bibliography{bibliography}
 
 \end{document}

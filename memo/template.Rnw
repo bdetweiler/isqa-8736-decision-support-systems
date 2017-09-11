@@ -20,7 +20,87 @@
 
 \section{A Need for Standardization}
 
-\lipsum
+To quickly level set, the decision at hand is regarding how to effectively implement reservations system standards and policies 
+in all hotels in the Suite Spot chain while considering business intelligence opportunities provided by a centralized reservations system.  
+A key facet to understanding this decision is being able to describe the nature of this decision for the Suite Spot organization, 
+which includes the recognizing the perspectives of the parties involved, applying the proper context model of the decision, 
+and identifying potential consequences of the decision.
+
+\subsection{Perspectives of Execs and Hotel Managers}
+
+First, to effectively describe the nature of this decision, we must assess the perspectives of the key stakeholders.
+While the decision of implementing reservations system standards is singular, there are multiple parties with differing perspectives of the impact of this decision.
+To assess the range of perspectives, we will consider the views of both parties (e.g., Suite Spot executives and hotel managers).  
+
+The perspective of executives is that this is a proactive decision to streamline standards and policies across the Suite Spot chain of hotels.
+Executives see this decision as a proactive opportunity because while the existing reservations systems process works,
+the decision to implement standards and policies would make the existing process better. To make this proactive decision successful, 
+executives will need to invest "time and effort to explore multiple perspectives, needs, and ideas through a proactive dialogue." \cite{harvard}
+Executives are nervous some hotels will leave the chain because of the decision to implement reservations systems standards, which highlights a 
+key consequence of this decision to be address later.
+
+Timing and concurrency of this decision is another area where perspectives of executives and hotel managers differ.
+Executives likely factor in the concurrent rollout of these standards to the various hotels in the chain while hotel managers may only consider
+the timing of when and how these standards affect their operating practices. Furthermore, the time horizon for executives is much longer than the 
+time horizon for hotel managers.
+
+The perspective of hotel managers is two-fold as some are on board with this decision and other are not.
+Hotel managers likely only see this decision as affecting their proprietary software and reservations processes and they do not have the same 
+broad purview as the executives to see the impact of this decision across the entire Suite Spot hotel chain.
+The hotel managers who are on board likely see the proactive nature of this decision and despite the changes they will need to make on an
+individual hotel level, they see the overall benefit of this decision to the entire hotel chain. 
+
+For the hotel managers not on board, these individuals would receive emails sent from the central reservations systems and then input the information 
+from the emails into their proprietary systems manually. These managers may not even see the current process as a problem.  It is likely you may hear 
+these hotel managers’ grumble, "If it ain’t broke, don’t fix it!" Unlike the perspective of the executives, these hotel managers will not view this decision as proactive.
+These hotel managers are the individuals who make the executives nervous that some hotels will leave the chain because of the decision to implement reservations systems standards.
+
+Although the perspectives of the executives and hotel managers differ, the decision makers at Suite Spot must ensure there is no information asymmetry between the two parties as 
+this could quickly derail whichever decision is made. Perspectives differ because information and goals between the groups differ. The key to this decision with multiple parties
+involved and any decision for that matter is clear and timely communication.
+
+\subsection{Decision Context Model}
+
+To effectively describe the nature of this decision, we must also examine the nature of the decisions context by applying the appropriate context model.  
+To apply the proper decision context model, Suite Spot must focus on clarifying the decision context which, "involves defining what decision is being made and why, 
+as well as its relationship to other decisions previously made or anticipated." \cite{step1} The context models to select from include the rational model, the satisficing model, 
+the organizational program model, the political model, the garbage can model, and the simulation model. While Suite Spot decision makers would prefer if the rational model applied 
+the best, this is not the case because whether they want to believe it or not, the decision makers are not rational, all decision alternatives are not known, and the probabilities 
+of decisions are not known. The rational model shows how decisions should be made but is not how most decisions are made yet this is the ultimate goal for this Suite Spot decision.
+
+One single context model does not perfectly encapsulate this decision and this decision is instead a function of a few of the models.
+The context model that seems to best apply to the current Suite Spot decision is the satisficing model.
+The satisficing model applies when decision makers set goals and then select an outcome that is "good enough" or satisfies their goals.
+The decision makers at Suite Spot are limited by their human capacities and their already established incomplete and imperfect knowledge of the 
+decision and potential outcomes, also known as bounded rationality.
+This context model is the most applicable choice because of the differing people and perspectives of those involved,
+the complexity of implementing new standards across a large, geographically diverse company,
+and the limited human capacity to understand the multitude of alternatives and consequences in play.
+
+Furthermore, while the organizational program model does not fit this decision either because the decision is not based on a set of operating procedures,
+conformance to group norms, or the results of pas decisions, a decent argument could be made for budgetary limitations.
+Additionally, despite the limited information provided, there is an inherent level of the power difference between the executives and hotel managers at Suite Spot,
+suggesting the relevance of the Political model.
+Lastly, while again we have limited information, it would not be surprising in the least if any elements of timing, randomness, or chance affected the decision, 
+alluding to the involvement of the garbage can model.
+The complexity of this decision for Suite Spot is what leads to multiple decision context models highlighting various aspects of the decision.
+
+\subsection{Decision Consequences}
+Lastly, every decision is ultimately about trade-offs and Suite Spot’s decision to implement reservations system standards is no different.
+A key element of trade-offs in decision-making are the consequences of the decision.
+Suite Spot executives will need to "Draw on [their] information and emotions to imagine what it would be like if [they] carried out each of the alternatives to the end"
+to play out a host of potential consequences of their decision. \cite{dartmouth}
+Consequences of this decision include increased costs (e.g., resources, employees), loss of hotels from the chain, and loss of revenue.  
+It is important to note that the outcomes of this decision are not perfectly known because this uncertainty adds to the complexity and potential consequences of the decision.
+With the benefit of the improvement of the reservations process comes the consequence that hotels being forced to change a substantial portion of their proprietary information systems.
+This consequence also includes costs for better hardware, updated software, and employee training.
+
+As mentioned earlier, another consequence plaguing this decision is that some hotels may decide to leave the Suite Spot chain because of the decision to implement reservations system standards.
+These consequences are important to consider because hardware, software, and training cost money, time and resources.
+The Suite Spot chain needs hotels to be successful and if hotels leave the Suite Spot chain because of this decision, Suite Spot is immediately feeling the consequences in terms of loss of revenue.
+Clearly stated, the best advice for Suite Spot where trying to avoid consequences is, "By making use of those around you in understanding the situation, weighing a variety of options, and explaining the decision to stakeholders,
+leaders can make better decisions and set themselves up for future success." \cite{harvard}
+
 
 \section{What This Means for Suite Spot and for You}
 

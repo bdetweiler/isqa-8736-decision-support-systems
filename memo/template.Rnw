@@ -20,6 +20,10 @@
 
 \section{A Need for Standardization}
 
+\lipsum
+
+\section{What This Means for Suite Spot and for You}
+
 To quickly level set, the decision at hand is regarding how to effectively implement reservations system standards and policies 
 in all hotels in the Suite Spot chain while considering business intelligence opportunities provided by a centralized reservations system.  
 A key facet to understanding this decision is being able to describe the nature of this decision for the Suite Spot organization, 
@@ -102,9 +106,6 @@ Clearly stated, the best advice for Suite Spot where trying to avoid consequence
 leaders can make better decisions and set themselves up for future success." \cite{harvard}
 
 
-\section{What This Means for Suite Spot and for You}
-
-\lipsum
 
 \section{Building a Data Warehouse}
 

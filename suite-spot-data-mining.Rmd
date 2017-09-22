@@ -1,0 +1,287 @@
+---
+title: "Suite Spot Data Mining"
+author: "Brian Detweiler, Jordan Hathaway, Kyle Hampton"
+date: "September 20, 2017"
+abstract: "We believe there is knowledge to be gleaned by mining the data captured by Suite Spot and its locations. This research is fully reproducible and the source can be found at https://github.com/bdetweiler/isqa-8736-decision-support-systems/blob/master/suite-spot-data-mining.Rmd"
+output: pdf_document
+---
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
+library(tidyverse)
+library(xlsx)
+library(ggplot2)
+library(reshape2)
+library(glmnet)
+library(TSA)
+library(zoo)
+library(xts)
+library(forecast)
+library(GGally)
+
+dat <- read.xlsx('3-data-mining-data.xls', sheetIndex = 1)
+dat <- as_tibble(dat)
+dat <- dat %>% filter(!is.na(Date))
+dat$Tip <- as.character(dat$Tip)
+
+# bucket tip ranges by the medians
+dat$Tip.Buckets <- dat$Tip
+dat$Tip[which(dat$Tip == 'None')] <- '0.0'
+dat$Tip[which(dat$Tip == 'Below 10%')] <- '0.05'
+dat$Tip[which(dat$Tip == '10-15%')] <- '0.10'
+dat$Tip[which(dat$Tip == '15-20%')] <- '0.15'
+dat$Tip[which(dat$Tip == 'Above 20%')] <- '0.20'
+dat$Tip <- as.numeric(dat$Tip)
+
+# One-Hot encoding
+dat$Appetizer <- as.character(dat$Appetizer)
+
+dat$App.Lettuce.Wraps <- ifelse(test = dat$Appetizer == 'Lettuce Wraps', 1, 0)
+dat$App.Buffalo.Wings <- ifelse(test = dat$Appetizer == 'Buffalo Wings', 1, 0)
+dat$App.Garlic.Bread <- ifelse(test = dat$Appetizer == 'Garlic Bread', 1, 0)
+dat$App.Bruchetta <- ifelse(test = dat$Appetizer == 'Bruchetta', 1, 0)
+dat$App.Crab.Cakes <- ifelse(test = dat$Appetizer == 'Crab Cakes', 1, 0)
+
+dat$Salad <- as.character(dat$Salad)
+dat$Salad.Vinaigrette <- ifelse(test = dat$Salad == 'Vinaigrette', 1, 0)
+dat$Salad.House <- ifelse(test = dat$Salad == 'House', 1, 0)
+dat$Salad.1000.Islands <- ifelse(test = dat$Salad == '1000 Islands', 1, 0)
+dat$Salad.Caesar <- ifelse(test = dat$Salad == 'Caesar', 1, 0)
+
+dat$Entree.Type <- as.character(dat$Entree.Type)
+dat$Entree.Vegetarian <- ifelse(test = dat$Entree.Type == 'Vegetarian', 1, 0)
+dat$Entree.Chicken <- ifelse(test = dat$Entree.Type == 'Chicken', 1, 0)
+dat$Entree.Steak <- ifelse(test = dat$Entree.Type == 'Steak', 1, 0)
+dat$Entree.Pork <- ifelse(test = dat$Entree.Type == 'Pork', 1, 0)
+dat$Entree.Seafood <- ifelse(test = dat$Entree.Type == 'Seafood', 1, 0)
+
+
+dat$Dessert <- as.character(dat$Dessert)
+dat$Dessert.Cheesecake <- ifelse(test = dat$Dessert == 'Cheesecake', 1, 0)
+dat$Dessert.Fruit <- ifelse(test = dat$Dessert == 'Fruit', 1, 0)
+dat$Dessert.Tiramisu <- ifelse(test = dat$Dessert == 'Tiramisu', 1, 0)
+dat$Dessert.Apple.Pie <- ifelse(test = dat$Dessert == 'Apple Pie', 1, 0)
+
+
+dat$Non.Alcoholic.Drinks <- as.character(dat$Non.Alcoholic.Drinks)
+dat$NA.Water <- ifelse(test = dat$Non.Alcoholic.Drinks == 'Water', 1, 0)
+dat$NA.Fruit.Juice <- ifelse(test = dat$Non.Alcoholic.Drinks == 'Fruit Juice', 1, 0)
+dat$NA.Pellegrino <- ifelse(test = dat$Non.Alcoholic.Drinks == 'Pellegrino', 1, 0)
+dat$NA.Diet.Soda <- ifelse(test = dat$Non.Alcoholic.Drinks == 'Diet Soda', 1, 0)
+dat$NA.Soda <- ifelse(test = dat$Non.Alcoholic.Drinks == 'Soda', 1, 0)
+
+dat$Wine <- as.character(dat$Wine)
+dat$Wine.Chardonnay <- ifelse(test = dat$Wine == 'Chardonnay', 1, 0)
+dat$Wine.Shiraz <- ifelse(test = dat$Wine == 'Shiraz', 1, 0)
+dat$Wine.Merlot <- ifelse(test = dat$Wine == 'Merlot', 1, 0)
+dat$Wine.Voigner <- ifelse(test = dat$Wine == 'Voigner', 1, 0)
+
+dat$Other.Drinks <- as.character(dat$Other.Drinks)
+dat$Other.Drinks.Rum <- ifelse(test = dat$Other.Drinks == 'Rum', 1, 0)
+dat$Other.Drinks.Gin <- ifelse(test = dat$Other.Drinks == 'Gin', 1, 0)
+dat$Other.Drinks.Scotch <- ifelse(test = dat$Other.Drinks == 'Scotch', 1, 0)
+dat$Other.Drinks.Margarita <- ifelse(test = dat$Other.Drinks == 'Margarita', 1, 0)
+
+dat$Payment.Method <- as.character(dat$Payment.Method)
+dat$Payment.Method.Credit.Card <- ifelse(test = dat$Payment.Method == 'Credit Card', 1, 0)
+dat$Payment.Method.Cash <- ifelse(test = dat$Payment.Method == 'Cash', 1, 0)
+dat$Payment.Method.Check <- ifelse(test = dat$Payment.Method == 'Check', 1, 0)
+
+dat$Date <- as.POSIXlt(as.character(dat$Date), format = '%m/%d/%Y')
+
+# Order by Date
+dat <- dat[order(dat$Date),]
+
+# Remove all the categorical variables, and leave only the encoded ones
+tmp <- dat %>% select(-Appetizer, -Salad, -Entree.Type, -Dessert, -Non.Alcoholic.Drinks, -Wine, -Other.Drinks, -Payment.Method)
+
+dat.df <- as.data.frame(tmp)
+```
+
+## Food and Drink Popularity
+
+```{r, echo=F}
+dat.m <- dat %>% select(Date, Appetizer, Salad, Entree.Type, Dessert)
+dat.m <- melt(data = dat.m, id.vars = c('Date'))
+```
+
+```{r, echo=F}
+dat.m <- within(dat.m, 
+                   value <- factor(value, 
+                                      levels=names(sort(table(value), 
+                                                        decreasing=TRUE))))
+ggplot(data=subset(dat.m, value != 'None'), aes(variable, ..count..)) + 
+  geom_bar(aes(fill = value), position = "dodge") +
+  labs(title="Food by Type", x="Food Category", y="Number Ordered")
+```
+
+```{r, echo=F}
+dat.m <- dat %>% select(Date, Non.Alcoholic.Drinks, Wine, Other.Drinks)
+dat.m <- melt(data = dat.m, id.vars = c('Date'))
+```
+
+```{r, echo=F}
+dat.m <- within(dat.m, 
+                   value <- factor(value, 
+                                      levels=names(sort(table(value), 
+                                                        decreasing=TRUE))))
+ggplot(data=subset(dat.m, value != 'None'), aes(variable, ..count..)) + 
+  geom_bar(aes(fill = value), position = "dodge") +
+  labs(title="Drinks By Type", x="Drink Category", y="Number Ordered")
+```
+
+## Food and Drink Popularity by Location
+```{r, echo=F}
+dat.m <- dat %>% select(Date, Location, Appetizer, Salad, Entree.Type, Dessert)
+dat.m <- melt(data = dat.m, id.vars = c('Date', 'Location'))
+dat.m$Location[which(dat.m$Location == 1)] <- 'Omaha'
+dat.m$Location[which(dat.m$Location == 2)] <- 'Kansas City'
+dat.m$Location[which(dat.m$Location == 3)] <- 'Minneapolis'
+dat.m$Location[which(dat.m$Location == 4)] <- 'St. Louis'
+dat.m$Location[which(dat.m$Location == 5)] <- 'Memphis'
+```
+
+```{r, echo=F}
+dat.m <- within(dat.m, 
+                   value <- factor(value, 
+                                      levels=names(sort(table(value), 
+                                                        decreasing=TRUE))))
+ggplot(data=subset(dat.m, value != 'None'), aes(variable, ..count..)) + 
+  geom_bar(aes(fill = value), position = "dodge") +
+  facet_wrap(~Location, nrow=3) +
+  labs(title="Food by Type", x="Food Category", y="Number Ordered")
+```
+
+```{r, echo=F}
+dat.m <- dat %>% select(Date, Location, Non.Alcoholic.Drinks, Wine, Other.Drinks)
+dat.m <- melt(data = dat.m, id.vars = c('Date', 'Location'))
+dat.m$Location[which(dat.m$Location == 1)] <- 'Omaha'
+dat.m$Location[which(dat.m$Location == 2)] <- 'Kansas City'
+dat.m$Location[which(dat.m$Location == 3)] <- 'Minneapolis'
+dat.m$Location[which(dat.m$Location == 4)] <- 'St. Louis'
+dat.m$Location[which(dat.m$Location == 5)] <- 'Memphis'
+```
+
+```{r, echo=F}
+dat.m <- within(dat.m, 
+                   value <- factor(value, 
+                                      levels=names(sort(table(value), 
+                                                        decreasing=TRUE))))
+ggplot(data=subset(dat.m, value != 'None'), aes(variable, ..count..)) + 
+  geom_bar(aes(fill = value), position = "dodge") +
+  facet_wrap(~Location, nrow=3) +
+  labs(title="Drinks By Type", x="Drink Category", y="Number Ordered")
+```
+
+
+## Payment Method Types
+
+```{r, echo=F}
+dat.m <- dat %>% select(Date, Payment.Method)
+dat.m <- melt(data = dat.m, id.vars = c('Date'))
+```
+
+```{r, echo=F}
+ggplot(data=dat.m, aes(variable, ..count..)) + 
+  geom_bar(aes(fill = value), position = "dodge") +
+  labs(title="Payment Methods", x="", y="Count")
+```
+
+## Payment Method Types by Location
+```{r, echo=F}
+dat.m <- dat %>% select(Date, Location, Payment.Method)
+dat.m <- melt(data = dat.m, id.vars = c('Date', 'Location'))
+dat.m$Location[which(dat.m$Location == 1)] <- 'Omaha'
+dat.m$Location[which(dat.m$Location == 2)] <- 'Kansas City'
+dat.m$Location[which(dat.m$Location == 3)] <- 'Minneapolis'
+dat.m$Location[which(dat.m$Location == 4)] <- 'St. Louis'
+dat.m$Location[which(dat.m$Location == 5)] <- 'Memphis'
+```
+
+```{r, echo=F}
+dat.m <- within(dat.m, 
+                   value <- factor(value, 
+                                      levels=names(sort(table(value), 
+                                                        decreasing=TRUE))))
+ggplot(data=subset(dat.m, value != 'None'), aes(variable, ..count..)) + 
+  geom_bar(aes(fill = value), position = "dodge") +
+  facet_wrap(~Location, nrow=3) +
+  labs(title="Payment Method by Type", x="Payment Method", y="Count")
+```
+
+## Tipping Buckets
+
+```{r, echo=F}
+dat.m <- dat %>% select(Date, Tip.Buckets)
+dat.m <- melt(data = dat.m, id.vars = c('Date'))
+dat.m$value <- as.character(dat.m$value)
+```
+
+```{r, echo=F}
+dat.m <- within(dat.m, 
+                   value <- factor(value, levels=c("Above 20%", "15-20%", "10-15%", "Below 10%", "None")))
+ggplot(data=dat.m, aes(variable, ..count..)) + 
+  geom_bar(aes(fill = value), position = "dodge") +
+  labs(title="Tip Amounts", x="", y="Count")
+```
+
+## Tipping Buckets by Location
+```{r, echo=F}
+dat.m <- dat %>% select(Date, Location, Tip.Buckets)
+dat.m <- melt(data = dat.m, id.vars = c('Date', 'Location'))
+dat.m$Location[which(dat.m$Location == 1)] <- 'Omaha'
+dat.m$Location[which(dat.m$Location == 2)] <- 'Kansas City'
+dat.m$Location[which(dat.m$Location == 3)] <- 'Minneapolis'
+dat.m$Location[which(dat.m$Location == 4)] <- 'St. Louis'
+dat.m$Location[which(dat.m$Location == 5)] <- 'Memphis'
+```
+
+```{r, echo=F}
+dat.m <- within(dat.m, 
+                   value <- factor(value, levels=c("Above 20%", "15-20%", "10-15%", "Below 10%", "None")))
+ggplot(data=dat.m, aes(variable, ..count..)) + 
+  geom_bar(aes(fill = value), position = "dodge") +
+  facet_wrap(~Location, nrow=3) +
+  labs(title="Tipping Buckets", x="Tip", y="Count")
+```
+
+## Table Size by Location by Date
+
+```{r, echo=F}
+
+table.ts <- data.frame(Date=dat$Date)
+table.ts <- cbind(table.ts, Omaha.Table.Size=rep(0, 1000))
+table.ts <- cbind(table.ts, KC.Table.Size=rep(0, 1000))
+table.ts <- cbind(table.ts, Minneapolis.Table.Size=rep(0, 1000))
+table.ts <- cbind(table.ts, STL.Table.Size=rep(0, 1000))
+table.ts <- cbind(table.ts, Memphis.Table.Size=rep(0, 1000))
+
+table.ts$Omaha.Table.Size[which(dat$Location == 1)] <- dat$Table.Size[which(dat$Location == 1)]
+table.ts$KC.Table.Size[which(dat$Location == 2)] <- dat$Table.Size[which(dat$Location == 2)]
+table.ts$Minneapolis.Table.Size[which(dat$Location == 3)] <- dat$Table.Size[which(dat$Location == 3)]
+table.ts$STL.Table.Size[which(dat$Location == 4)] <- dat$Table.Size[which(dat$Location == 4)]
+table.ts$Memphis.Table.Size[which(dat$Location == 5)] <- dat$Table.Size[which(dat$Location == 5)]
+
+ggplot(table.ts, aes(Date, Omaha.Table.Size)) + 
+  geom_point(color="red") +
+  geom_point(aes(Date, KC.Table.Size), color="steelblue") +
+  geom_point(aes(Date, Minneapolis.Table.Size), color="green") +
+  geom_point(aes(Date, STL.Table.Size), color="yellow") +
+  geom_point(aes(Date, Memphis.Table.Size), color="black") +
+  xlab("") +
+  ylab("Table Size")
+``` 
+
+Omaha is in red, Kansas City in blue, Minneapolis in green, St. Louis in yellow, and Memphis in black. It is difficult to detect any patterns here.
+
+### Number of Patrons Served by Location, 09/01/2016 - 08/31/2017
+```{r, echo=F}
+sums <- colSums(table.ts[,-1])
+
+table.size.df <- data.frame(Omaha=sums[[1]], KC=sums[[2]], Minneapolis=sums[[3]], St.Louis=sums[[4]], Memphis=sums[[5]])
+kable(table.size.df, format = "markdown", booktabs = TRUE, align = 'r', col.names=c('Omaha', 'KC', 'Minneapolis', 'St. Louis', 'Memphis'))
+```
+

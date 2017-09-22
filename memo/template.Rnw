@@ -19,7 +19,6 @@
 \maketitle
 
 \section{A Need for Standardization}
-
 \lipsum
 
 \section{What This Means for Suite Spot and for You}
@@ -112,7 +111,7 @@ leaders can make better decisions and set themselves up for future success." \ci
 One of the major benefits to standardized data definitions is improved visibility over all of Suite Spot's reservations via data warehousing.
 You may have heard the phrase, "data is the new oil", and that is no exception for Suite Spot. We have hired data analysts to help us improve
 sales by analyzing our advertising efforts under various market conditions. Their analysis is only as good as the data we have, and we have
-found that the current state of desperate data systems across our hotel chains make data warehousing impractical at best, and infeasible at worst.
+found that the current state of disparate data systems across our hotel chains make data warehousing impractical at best, and infeasible at worst.
 
 It is essential for Suite Spot to have a centralized analytics repository. For our chain to grow, we must know our customer base. With a centralized
 data warehouse, we can apply data mining techniques to uncover hidden predictors in customer behavior.

@@ -1,0 +1,801 @@
+%\title{Overleaf Memo Template}
+% Using the texMemo package by Rob Oakes
+\documentclass[a4paper,11pt]{texMemo}
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{lipsum}
+\usepackage[font=small,labelfont=bf]{caption}
+
+%% Edit the header section here. To include your
+%% own logo, upload a file via the files menu.
+\memoto{All Executives and Hotel Managers}
+\memofrom{Decision Support Systems}
+\memosubject{Data Mining Recommendations}
+\memodate{\today}
+\logo{\includegraphics[width=0.3\textwidth]{suite-spot.png}}
+
+\begin{document}
+\maketitle
+
+\section{Overview}
+
+\subsection{What is data mining?}
+
+Data mining is the process of identifying information from vast amounts of 
+data. Data mining utilizes employees and automated programs to analyze an 
+organization's data looking for trends, patterns, anomalies, or outliers,
+with the hope of identifying actionable insights from a set of data.
+Data mining seeks to transform the data that a business collects into 
+information that can used in ways such as better understanding their customers,
+evaluating product sales performance, or even improving processes. Data mining 
+harnesses practices from statistics, artificial intelligence, data
+visualization, and business analysis, all of which contribute to the continued
+growth in popularity of data mining. Those who conduct data mining will need at 
+least a high-level understanding of statistics, a familiarity with computers 
+and programming, and an adequate amount of professional skepticism to identify
+hidden insights in the data. A key element of data mining is asking good 
+questions and answering them using the available data, a topic we will cover 
+in further detail soon with an example listing of questions included.
+
+Regarding data mining, Thomas Davenport in the Harvard Business Review details, 
+"The latest strategic weapon for companies is analytical decision making."
+\cite{bi} Davenport further explain companies "have used analytics to better 
+understand their customers and optimize their extended supply chains to 
+maximize their returns on investment while providing the best customer 
+service." \cite{bi} Most importantly, Davenport concludes "the level of
+success is highly dependent on a company understand its customers, vendors,
+business processes, and the extended supply chain," \cite{bi} which can
+be done using data mining.  
+
+\subsection{What is an example of data mining?}
+To highlight the value of data mining, we will next demonstrate the 
+potential value of data mining with a couple key examples. The first example 
+demonstrates the value of data mining at an industry leading retailer and 
+the second at an industry leading hospitality chain. In these examples, we
+will consider how each company has used data mining to drive overall business
+growth. 
+
+A great, easy to comprehend example of data mining is data mining used 
+in retail stores on customer and transaction data. Upon analyzing this data,
+data mining can reveal unknown insights regarding customer shopping habits, 
+transaction size or frequency, and even specific product sales details.
+A excellent real-world application of data mining comes from Target. As
+described by Forbes "Every time you go shopping, you share intimate details 
+about your consumption patterns with retailers. And many of those retailers are 
+studying those details to figure out what you like, what you need, and which
+coupons are most likely to make you happy." \cite{target} One of the ways
+Target uses data mining is to try "to hook parents-to-be at that crucial moment
+before they turn into rampant - and loyal - buyers of all things pastel, plastic,
+and miniature." \cite{target} 
+
+As such, Target applies data mining techniques to 
+their customer details and buying habits to identify customers on the verge of 
+becoming parents, sometimes before the customers even realize it themselves. 
+Target created a 'pregnancy score' based on customer buying habits of key items 
+such as unscented lotion, supplements, and big bags of cotton balls. Based on
+the pregnancy score, Target began sending automatic mail coupons for nursery
+furniture and maternity clothing to customers exceeding a certain score.
+The article further sites an instance where Target new one man's high school
+age daughter was pregnant before he did. The man found out about the pregnancy
+after seeing Target baby clothes coupons in the mail. Target used data mining
+to better understand their customers and in this case, because of data mining,
+Target advantageously knows more about their customers than their customers know
+about themselves. 
+
+A more specific example of data mining in the hospitality
+industry comes from the US hotel chain Red Roof Inn. "During the record-setting
+winter of 2013/2014, [Red Roof Inn] realized the huge value of having a number
+of hotels close to major airports at a time when flight cancellation rate was 
+around 3\%. This meant around 90,000 passengers were being left stranded every
+day. The chain's marketing and analytics team worked together to identify openly
+available public datasets on weather conditions and flight cancellations.
+Knowing that most of their customers would use web search on mobile devices to 
+search for nearby accommodation, a targeted marketing campaign was launched, 
+aimed at mobile device users in the geographical areas most likely to be 
+affected. This led to a 10\% increase in business in areas where the strategy 
+was deployed." \cite{forbes} Red Roof Inn employees utilized existing, publicly 
+available data to analyze weather conditions and flight cancellations to issue 
+targeted advertisements leading to a significant increase in business. 
+This example is data mining at its best.
+
+\subsection{What would be the benefits of data mining to the company?}
+
+The chief benefit of data mining is identifying actionable information that is 
+advantageous to the organization that may not have been discovered otherwise.  
+Companies collect troves of data through a myriad of sensor, device, and input
+network each day.  Unfortunately, much of that data is never used.  
+Data mining puts this previously untapped data to use by uncovering hidden value, 
+unknown insights, and quite unexpected realizations within the data. 
+In describing the benefits of data mining, Dr. Arno Penzias explained, 
+"If you're not doing this, you're out of business." \cite{bi} Dr. Penzias
+frames data mining not exactly as a benefit, but more so a necessary means of 
+survival in today's hypercompetitive business marketplace.  
+
+\subsection{What questions might the company attempt to answer using data mining?}
+
+Data mining is often hypothesis-driven, which allows the company to ask and seek 
+answers a plethora of critical questions.  As previously mentioned, data mining is 
+often best used when employees first ask questions, and then answer them with the data.
+By using hypothesis testing, companies can use the data they already have to answer the 
+outstanding questions necessary to improve their business. Asking good questions are key
+to hypothesis-driven data mining.  Included are several questions SuiteSpot may attempt
+to answer using data mining:
+
+  \begin{enumerate}
+    \item What are the most popular dates for dinner at each hotel location?
+    \item As storing inventory, particularly perishable items, for an extended period of time can be costly, what appetizers, entrees, and desserts are the least popular?
+    \item What desserts are most often selected with what entrees?
+    \item What appetizers and entrees sell the most wine along with the dinner?
+    \item How many tables does each restaurant turn over in a night and how fast on average does each table turn over?
+    \item What is the average table size in each restaurant and what is the average party size at each restaurant?
+    \item Do certain menu items, either food or drinks, sell better in certain locations?
+    \item What is the most common payment method used and does payment method have any relation to tip amount?
+    \item Does the day of the week of the dinner date correlate to any food or drink purchases?
+    \item Which restaurants receive the highest amount in tips and which food and drink items correlate with the highest amount in tips?
+  \end{enumerate}
+
+\subsection{Finally, what information technology infrastructure needs to be in place before the organization can actually perform any data mining activity?}
+
+To even perform data mining, SuiteSpot will first need to have adequate information 
+technology infrastructure on hand. On the software side, SuiteSpot will need the
+appropriate data mining software.  Many big players in the software world publish
+their own data mining software such as IBM SPSS, Statistica, and SAS.  SuiteSpot 
+would also be able to use business intelligence software such as SAP, IBM Cognos, 
+or Teradata for data mining although their capabilities are limited when compared
+to data mining software.  SuiteSpot will also likely want to have a software platform
+and analytics code language such as R, SQL, or Python so employees can conduct 
+their own, ad-hoc type analyses. Additionally, SuiteSpot will need to have their 
+data stored in a data warehouse or a collection of data marts so these software 
+tools will be able to analyze the data. 
+
+On the hardware side, SuiteSpot will need server space to store the data and hold 
+the software necessary for data mining.  SuiteSpot has plenty of options in 
+this arena and they can choose from a physical/on-premise hardware architecture, 
+a cloud-based architecture such as Amazon Web Services (AWS), or a mix of both.  
+SuiteSpot should decide on their hardware strategy first as without any hardware
+to back it up, software is useless.
+
+Beyond software and hardware, SuiteSpot will need adequately skilled employees to 
+conduct the data mining.  The information technology focus here is people, processes, 
+and technology.  Without the right people, the process of data mining and the 
+hardware and software technology is meaningless.  As previously mentioned, data mining 
+expertise draws from the fields of statistics, programming, data analytics, and even 
+business.  To make the information technology infrastructure most effective, 
+SuiteSpot will need to higher individuals with experience as statisticians, computer 
+scientists, data analysts, data scientists, or business analysts.  To summarize, 
+  the data mining solution for SuiteSpot involves three key pieces: 
+people, processes, and technology, with each piece being necessary for success.
+
+
+\section{Data Mining}
+
+<<include=FALSE, cache=F>>=
+knitr::opts_chunk$set(echo = FALSE)
+library(knitr)
+library(kableExtra)
+library(tidyverse)
+library(xlsx)
+library(ggplot2)
+library(reshape2)
+library(GGally)
+library(lubridate)
+library(dplyr)
+library(magrittr)
+
+@
+
+<<include=FALSE, cache=F>>=
+# setwd('/home/bdetweiler/src/Data_Science/isqa-8736-decision-support-systems/deliverable2/')
+dat <- read.xlsx('3-data-mining-data.xls', sheetIndex = 1)
+@
+
+We now present a demonstration of the value of data mining on data provided by Suite Spot consisting of dining transactions at five Suite Spot locations.
+Often we will not be given a particular task with the data, but we will be asked to find something interesting or useful about it. 
+It is crucial to first understand the data. First we may want to look at the size of both the dimensions and the observations. This dataset contains
+\Sexpr{dim(dat)[2]} dimensions and \Sexpr{dim(dat)[1]} observations. 
+
+We must first understand the dataset from a structural standpoint. We can quickly do this by looking at the first few observations.
+
+<<echo=F>>=
+kable(head(dat)[1:7], 
+      format = "latex", 
+      booktabs = TRUE, 
+      align = 'r', 
+      col.names=c('Date', 'Location', 'Table Size', 'Appetizer', 'Salad', 'Entree', 'Dessert')) %>%
+  kable_styling(latex_options = c("repeat_header"), font_size = 7) 
+@
+
+continued...
+
+<<echo=F>>=
+
+kable(head(dat)[8:12], 
+      format = "latex", 
+      booktabs = TRUE, 
+      align = 'r', 
+      col.names=c('N.A. Drinks', 'Wine', 'Other Drinks', 'Payment Method', 'Tip')) %>%
+  kable_styling(latex_options = c("repeat_header"), font_size = 7) 
+#kable(head(dat)[,1:6], format = "latex", booktabs = TRUE, align = 'r', , col.names=c('Date', 'Location', 'Table Size', 'Appetizer', 'Salad', 'Entree'))
+#kable(head(dat)[,7:12], format = "latex", booktabs = TRUE, align = 'r', , col.names=c('Dessert', 'N.A. Drinks', 'Wine', 'Other Drinks', 'Payment Method', 'Tip'), caption="The first 6 rows of the dataset")
+@
+
+Here, we note the entries have a date, a location ID, the size of the table (number of patrons), the various meal and drink items the patrons chose, the payment method, and the tip bucket.
+After performing some data cleaning, and removing some observations with missing dates, we can then group the observations into buckets by month. This allows us to aggregate and visualize the data. 
+By visualizing our dataset we are able to quickly determine where to focus our efforts.
+
+<<>>=
+dat <- dplyr::as_tibble(dat)
+dat <- dat %>% filter(!is.na(Date))
+dat$Tip <- as.character(dat$Tip)
+
+# bucket tip ranges by the medians
+dat$Tip.Buckets <- dat$Tip
+dat$Tip[which(dat$Tip == 'None')] <- '0.0'
+dat$Tip[which(dat$Tip == 'Below 10%')] <- '0.05'
+dat$Tip[which(dat$Tip == '10-15%')] <- '0.10'
+dat$Tip[which(dat$Tip == '15-20%')] <- '0.15'
+dat$Tip[which(dat$Tip == 'Above 20%')] <- '0.20'
+dat$Tip <- as.numeric(dat$Tip)
+
+# One-Hot encoding
+dat$Appetizer <- as.character(dat$Appetizer)
+
+dat$App.Lettuce.Wraps <- ifelse(test = dat$Appetizer == 'Lettuce Wraps', 1, 0)
+dat$App.Buffalo.Wings <- ifelse(test = dat$Appetizer == 'Buffalo Wings', 1, 0)
+dat$App.Garlic.Bread <- ifelse(test = dat$Appetizer == 'Garlic Bread', 1, 0)
+dat$App.Bruchetta <- ifelse(test = dat$Appetizer == 'Bruchetta', 1, 0)
+dat$App.Crab.Cakes <- ifelse(test = dat$Appetizer == 'Crab Cakes', 1, 0)
+
+dat$Salad <- as.character(dat$Salad)
+dat$Salad.Vinaigrette <- ifelse(test = dat$Salad == 'Vinaigrette', 1, 0)
+dat$Salad.House <- ifelse(test = dat$Salad == 'House', 1, 0)
+dat$Salad.1000.Islands <- ifelse(test = dat$Salad == '1000 Islands', 1, 0)
+dat$Salad.Caesar <- ifelse(test = dat$Salad == 'Caesar', 1, 0)
+
+dat$Entree.Type <- as.character(dat$Entree.Type)
+dat$Entree.Vegetarian <- ifelse(test = dat$Entree.Type == 'Vegetarian', 1, 0)
+dat$Entree.Chicken <- ifelse(test = dat$Entree.Type == 'Chicken', 1, 0)
+dat$Entree.Steak <- ifelse(test = dat$Entree.Type == 'Steak', 1, 0)
+dat$Entree.Pork <- ifelse(test = dat$Entree.Type == 'Pork', 1, 0)
+dat$Entree.Seafood <- ifelse(test = dat$Entree.Type == 'Seafood', 1, 0)
+
+
+dat$Dessert <- as.character(dat$Dessert)
+dat$Dessert.Cheesecake <- ifelse(test = dat$Dessert == 'Cheesecake', 1, 0)
+dat$Dessert.Fruit <- ifelse(test = dat$Dessert == 'Fruit', 1, 0)
+dat$Dessert.Tiramisu <- ifelse(test = dat$Dessert == 'Tiramisu', 1, 0)
+dat$Dessert.Apple.Pie <- ifelse(test = dat$Dessert == 'Apple Pie', 1, 0)
+
+
+dat$Non.Alcoholic.Drinks <- as.character(dat$Non.Alcoholic.Drinks)
+dat$NA.Water <- ifelse(test = dat$Non.Alcoholic.Drinks == 'Water', 1, 0)
+dat$NA.Fruit.Juice <- ifelse(test = dat$Non.Alcoholic.Drinks == 'Fruit Juice', 1, 0)
+dat$NA.Pellegrino <- ifelse(test = dat$Non.Alcoholic.Drinks == 'Pellegrino', 1, 0)
+dat$NA.Diet.Soda <- ifelse(test = dat$Non.Alcoholic.Drinks == 'Diet Soda', 1, 0)
+dat$NA.Soda <- ifelse(test = dat$Non.Alcoholic.Drinks == 'Soda', 1, 0)
+
+dat$Wine <- as.character(dat$Wine)
+dat$Wine.Chardonnay <- ifelse(test = dat$Wine == 'Chardonnay', 1, 0)
+dat$Wine.Shiraz <- ifelse(test = dat$Wine == 'Shiraz', 1, 0)
+dat$Wine.Merlot <- ifelse(test = dat$Wine == 'Merlot', 1, 0)
+dat$Wine.Voigner <- ifelse(test = dat$Wine == 'Voigner', 1, 0)
+
+dat$Other.Drinks <- as.character(dat$Other.Drinks)
+dat$Other.Drinks.Rum <- ifelse(test = dat$Other.Drinks == 'Rum', 1, 0)
+dat$Other.Drinks.Gin <- ifelse(test = dat$Other.Drinks == 'Gin', 1, 0)
+dat$Other.Drinks.Scotch <- ifelse(test = dat$Other.Drinks == 'Scotch', 1, 0)
+dat$Other.Drinks.Margarita <- ifelse(test = dat$Other.Drinks == 'Margarita', 1, 0)
+
+dat$Payment.Method <- as.character(dat$Payment.Method)
+dat$Payment.Method.Credit.Card <- ifelse(test = dat$Payment.Method == 'Credit Card', 1, 0)
+dat$Payment.Method.Cash <- ifelse(test = dat$Payment.Method == 'Cash', 1, 0)
+dat$Payment.Method.Check <- ifelse(test = dat$Payment.Method == 'Check', 1, 0)
+
+dat$Date <- as.POSIXlt(as.character(dat$Date), format = '%m/%d/%Y')
+# Order by Date
+dat <- dat[order(dat$Date),]
+
+dat$Month <- as.character(month(dat$Date, label=T))
+
+# Remove all the categorical variables, and leave only the encoded ones
+tmp <- dat %>% select(-Date, -Location, -Appetizer, -Salad, -Entree.Type, -Dessert, -Non.Alcoholic.Drinks, -Wine, -Other.Drinks, -Payment.Method, -Tip.Buckets)
+
+# I'm not happy with this...
+dat.jan <- data.frame(tmp)  %>% filter(Month == 'Jan') %>% select(-Month)
+agg <- data.frame(t(as.matrix(colSums(dat.jan))))
+dat.feb <- data.frame(tmp)  %>% filter(Month == 'Feb') %>% select(-Month)
+agg <- rbind(agg, data.frame(t(as.matrix(colSums(dat.feb)))))
+dat.mar <- data.frame(tmp)  %>% filter(Month == 'Mar') %>% select(-Month)
+agg <- rbind(agg, data.frame(t(as.matrix(colSums(dat.mar)))))
+dat.apr <- data.frame(tmp)  %>% filter(Month == 'Apr') %>% select(-Month)
+agg <- rbind(agg, data.frame(t(as.matrix(colSums(dat.apr)))))
+
+dat.may <- data.frame(tmp)  %>% filter(Month == 'May') %>% select(-Month)
+agg <- rbind(agg, data.frame(t(as.matrix(colSums(dat.may)))))
+dat.jun <- data.frame(tmp)  %>% filter(Month == 'Jun') %>% select(-Month)
+agg <- rbind(agg, data.frame(t(as.matrix(colSums(dat.jun)))))
+dat.jul <- data.frame(tmp)  %>% filter(Month == 'Jul') %>% select(-Month)
+agg <- rbind(agg, data.frame(t(as.matrix(colSums(dat.jul)))))
+dat.aug <- data.frame(tmp)  %>% filter(Month == 'Aug') %>% select(-Month)
+agg <- rbind(agg, data.frame(t(as.matrix(colSums(dat.aug)))))
+
+dat.sep <- data.frame(tmp)  %>% filter(Month == 'Sep') %>% select(-Month)
+agg <- rbind(agg, data.frame(t(as.matrix(colSums(dat.sep)))))
+dat.oct <- data.frame(tmp)  %>% filter(Month == 'Oct') %>% select(-Month)
+agg <- rbind(agg, data.frame(t(as.matrix(colSums(dat.oct)))))
+dat.nov <- data.frame(tmp)  %>% filter(Month == 'Nov') %>% select(-Month)
+agg <- rbind(agg, data.frame(t(as.matrix(colSums(dat.nov)))))
+dat.dec <- data.frame(tmp)  %>% filter(Month == 'Dec') %>% select(-Month)
+agg <- rbind(agg, data.frame(t(as.matrix(colSums(dat.dec)))))
+
+agg <- cbind(Month=factor(c('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'), 
+                          levels = c('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec')), agg)
+
+@
+
+
+
+\subsection{Exploratory Data Analysis}
+
+There are a lot of ways to visualize data. We may wish to start with simple frequency plots to see what food and drink items stand out.
+For drinks, we omit occurrences where water or no drinks were ordered, since we are only interested in purchases. There may be situations however,
+where we are interested in when water or no drinks were ordered, as the absence of a purchase has different implications. For now, we will
+focus on purchases. Figure \ref{fig:foodfreq} shows steak to be our bestselling entree, and cheesecake stands out as our bestselling dessert. Conversely, 
+apple pie, is not selling well as a dessert. It may be a good idea to look into the reasons behind this. Our worstselling item overall appears to be
+the crab cakes appetizer. We may need to look at either improving the quality of the item, or replacing it altogether.
+
+<<warning=F>>=
+dat.m <- dat %>% select(Date, Appetizer, Salad, Entree=Entree.Type, Dessert)
+
+dat.m <- melt(data = dat.m, id.vars = c('Date'))
+dat.m <- within(dat.m, 
+                   value <- factor(value, 
+                                      levels=names(sort(table(value), 
+                                                        decreasing=TRUE))))
+@
+
+<<foodfreq, fig.height=4.5, fig.width=5, fig.align='center', fig.cap="Food orders for all locations. Steak and cheesecake are standouts in their categories.", warning=F>>=
+ggplot(data=subset(dat.m, value != 'None'), aes(variable, ..count..)) + 
+  geom_bar(aes(fill = value), position = "dodge") +
+  labs(title="Food by Type", x="Food Category", y="Number Ordered")
+@
+
+<<warning=F>>=
+dat.m <- dat %>% select(Date, NonAlcoholic=Non.Alcoholic.Drinks, Wine, Other=Other.Drinks)
+dat.m <- melt(data = dat.m, id.vars = c('Date'))
+@
+
+<<drinkfreq, fig.height=4.5, fig.width=5, fig.align='center', fig.cap="Drink orders for all locations. Chardonnay and scotch are standouts in their categories.", warning=F>>=
+dat.m <- within(dat.m, 
+                   value <- factor(value, 
+                                      levels=names(sort(table(value), 
+                                                        decreasing=TRUE))))
+ggplot(data=subset(subset(dat.m, value != 'None'), value != 'Water'), aes(variable, ..count..)) + 
+  geom_bar(aes(fill = value), position = "dodge") +
+  labs(title="Drinks By Type", x="Drink Category", y="Number Ordered")
+@
+
+From the perspective of drinks, in Figure \ref{fig:drinkfreq}, margarita sales appear to be a little low, but chardonnay dominates our overall sales. It may be possible to increase the 
+price on chardonnay while offering happy hour specials on margaritas, and in doing so, increase profits.
+
+\subsubsection{Trends Over Time}
+
+Looking at our overall patronage in Figure \ref{fig:patronfreq}, there seems to be a dip in June, and a surge from October - December. We don't have enough data to determine the cause
+for the surge in the fall, but it would be worth looking into. Are there more events such as conventions, concerts, or festivals in the area around that time?
+This would be good to identify so we can determine our primary sales drivers. The dip in June is somewhat concerning. Can we improve our summer numbers by 
+adding patio seating? This is worth investigating further.
+
+<<patronfreq, fig.height=3, fig.width=4, fig.align='center', fig.cap="Overall patronage by month.", warning=F>>=
+agg.m <- melt(agg, id.vars = 'Month')
+agg.table.size <- agg.m %>% filter(variable == 'Table.Size')
+
+ggplot(agg.table.size, aes(x=Month, group=variable, y=value)) +
+  geom_bar(stat="identity" ) + 
+  scale_x_discrete("Month", labels = c("Jan" = "J",
+                                       "Feb" = "F",
+                                       "Mar" = "M",
+                                       "Apr" = "A",
+                                       "May" = "M",
+                                       "Jun" = "J",
+                                       "Jul" = "J",
+                                       "Aug" = "A",
+                                       "Sep" = "S",
+                                       "Oct" = "O",
+                                       "Nov" = "N",
+                                       "Dec" = "D")) + 
+  labs(y="Number of Patrons", title="Table Size by Month") 
+@
+
+Seasonality can often influence beverage choices so it may be interesting to see how beverage purchases behave over time. In Figure \ref{fig:drinksbymonth},
+it would appear that chardonnay sales tend to spike in the fall, but as we have seen, our overall patronage spikes in the fall, so a more valuable statistic to 
+use might be the \textit{rate} at whcih drinks sell. That is, the total number of a particular drink divided by the total number of patrons
+in a given month.
+
+<<drinksbymonth, fig.height=4, fig.width=4, fig.align='center', fig.cap="Overall drink purchases by month.">>=
+drinks.agg <- agg %>% select(Month,
+                             Table.Size,
+                             Fruit.Juice=NA.Fruit.Juice,
+                             Pellegrino=NA.Pellegrino,
+                             Diet.Soda=NA.Diet.Soda,
+                             Soda=NA.Soda,
+                             Chardonnay=Wine.Chardonnay,
+                             Shiraz=Wine.Shiraz,
+                             Merlot=Wine.Merlot,
+                             Voigner=Wine.Voigner,
+                             Rum=Other.Drinks.Rum,
+                             Gin=Other.Drinks.Gin,
+                             Scotch=Other.Drinks.Scotch,
+                             Margarita=Other.Drinks.Margarita)
+
+drinks.agg.m <- drinks.agg %>% select(-Table.Size) 
+drinks.agg.m <- melt(drinks.agg.m, id.vars=c('Month'))
+
+ggplot(drinks.agg.m, aes(x=Month, y=value)) +
+  geom_line(stat="identity", aes(group=1)) +
+  facet_wrap(~variable) +
+  scale_x_discrete("Month", labels = c("Jan" = "J",
+                                       "Feb" = "F",
+                                       "Mar" = "M",
+                                       "Apr" = "A",
+                                       "May" = "M",
+                                       "Jun" = "J",
+                                       "Jul" = "J",
+                                       "Aug" = "A",
+                                       "Sep" = "S",
+                                       "Oct" = "O",
+                                       "Nov" = "N",
+                                       "Dec" = "D")) + 
+  labs(title='Drinks purchased by month', y='Orders') 
+@
+
+This is shown in Figure \ref{fig:drinkratebymonth}, and it is interesting to note that chardonnay rates actually peak in May. The overall chart in
+Figure \ref{fig:drinksbymonth} may be useful in managing inventory, but the rate may be more useful in identifying trends of popularity. 
+If we wished to temporarily increase the price of chardonnay, May would be a good time to do so. This same technique can be applied to food as well.
+
+<<drinkratebymonth, fig.height=4, fig.width=4, fig.align='center', fig.cap="Drink purchase rate by month.", warning=F>>=
+drinks.agg.std <- drinks.agg %>% select(-Month, -Table.Size) / drinks.agg$Table.Size
+drinks.agg.std$Month <- drinks.agg$Month 
+drinks.agg.std.m <- melt(drinks.agg.std, id.vars=c('Month'))
+
+ggplot(drinks.agg.std.m, aes(x=Month, y=value)) +
+  geom_line(stat="identity", aes(group=1)) +
+  facet_wrap(~variable) +
+  scale_x_discrete("Month", labels = c("Jan" = "J",
+                                       "Feb" = "F",
+                                       "Mar" = "M",
+                                       "Apr" = "A",
+                                       "May" = "M",
+                                       "Jun" = "J",
+                                       "Jul" = "J",
+                                       "Aug" = "A",
+                                       "Sep" = "S",
+                                       "Oct" = "O",
+                                       "Nov" = "N",
+                                       "Dec" = "D")) + 
+  labs(title='Rate of drink purchases by month', y='Orders')
+@
+
+
+<<drinksbyentree, fig.height=4, fig.width=4, fig.align='center', fig.cap="Drink purchase rate by month.", warning=F>>=
+
+items <- c('App.Lettuce.Wraps', 
+           'App.Buffalo.Wings',
+           'App.Garlic.Bread',
+           'App.Bruchetta',
+           'App.Crab.Cakes',
+           'Salad.Vinaigrette',
+           'Salad.House',
+           'Salad.1000.Islands',
+           'Salad.Caesar',
+           'Entree.Vegetarian',
+           'Entree.Chicken',
+           'Entree.Steak',
+           'Entree.Pork',
+           'Entree.Seafood',
+           'Dessert.Cheesecake',
+           'Dessert.Fruit',
+           'Dessert.Tiramisu',
+           'Dessert.Apple.Pie',
+           'NA.Water',
+           'NA.Fruit.Juice',
+           'NA.Pellegrino',
+           'NA.Diet.Soda',
+           'NA.Soda',
+           'Wine.Chardonnay',
+           'Wine.Shiraz',
+           'Wine.Merlot',
+           'Wine.Voigner',
+           'Other.Drinks.Rum',
+           'Other.Drinks.Gin',
+           'Other.Drinks.Scotch',
+           'Other.Drinks.Margarita')
+
+ordered.together.df <- data.frame(Item1=c(), Item2=c(), Percentage=c())
+
+# Iterate through all items on the menu
+for (i in items) {
+  # Permute by all other items on the menu
+  remaining.items <- (data_frame(items) %>% filter(items != i))$items
+  for (j in remaining.items) {
+    combined.items <- dat %>% select(i, j)
+    percent.ordered.together <- length(which(rowSums(combined.items) == 2)) / (length(which(rowSums(combined.items) == 2)) + length(which(rowSums(combined.items) == 1)))
+    new.df <- data.frame(Item1=i, Item2=j, Percentage=percent.ordered.together)
+    ordered.together.df <- rbind(ordered.together.df, new.df)
+  }
+}
+
+ordered.together.df <- ordered.together.df %>% arrange(desc(Percentage)) %>% filter(Item1 != 'NA.Water', Item2 != 'NA.Water')
+steak.cheesecake.percent <- ordered.together.df[1,3]
+steak.chardonnay.percent <- ordered.together.df[3,3]
+steak.house.percent <- ordered.together.df[7,3]
+@
+
+We can also combine columns to determine the most popular item pairings. Our most popular item pairing is the \textbf{steak entree} and the \textbf{cheesecake dessert}. 
+When steak was ordered, \Sexpr{round(100 * steak.cheesecake.percent)}\% of the time cheesecake was ordered as the dessert. Steak was also ordered with \textbf{chardonnay}
+\Sexpr{round(100 * steak.chardonnay.percent)}\% of the time, and a \textbf{house salad} was ordered with steak \Sexpr{round(100 * steak.house.percent)}\% of the time. 
+We could use this information to offer a three course meal with wine as a special on Valentine's Day, for instance.
+
+
+
+
+\subsubsection{Evaluating Service}
+
+We can also discover \textit{latent}, or hidden effects. If we wished to directly evaluate service quality at each of the locations, 
+we would have to have patrons fill out surveys. This is not ideal, as we would have to account for non-response bias, and the logistics
+of encoding the responses. We may just not get very many responses at all, as customers generally just want to eat and drink, rather than
+fill out surveys. But we suspect that patrons tend to voice their opinions on service by the way they tip. 
+
+A good tip is generally considered to be at least 15\% or more, and a bad one less than that. We can then simplify our tip buckets into
+"good" and "bad" tips. By examining the percentage of "good" tips at each location, we can determine which locations are doing well, 
+and which ones need improvement. In Figure \ref{fig:tips}, we can see that our St. Louis location is well above the rest of the 
+locations, and Memphis is lagging behind. We could theoretically use this data to drive incentive programs. Perhaps a "Location of the Month"
+contest, where we reward the location with the highest percentage of "good" tips could improve customer service. This would be a win-win
+as our wait staff would be receiving higher tips and our customers would be getting better service.
+
+<<tips, fig.height=4, fig.width=4, fig.align='center', fig.cap="Good tips percentage by location by month. The red line indicates 0.50.">>=
+dat.m <- dat %>% select(Date, Location, Tip.Buckets)
+dat.m <- melt(data = dat.m, id.vars = c('Date', 'Location'))
+dat.m$Location[which(dat.m$Location == 1)] <- 'Omaha'
+dat.m$Location[which(dat.m$Location == 2)] <- 'Kansas City'
+dat.m$Location[which(dat.m$Location == 3)] <- 'Minneapolis'
+dat.m$Location[which(dat.m$Location == 4)] <- 'St. Louis'
+dat.m$Location[which(dat.m$Location == 5)] <- 'Memphis'
+
+kc.fifteen <- (dat.m %>% select(-Date) %>% filter(Location == 'Kansas City', value == '15-20%') %>% count())[[1]]
+kc.abovetwenty <- (dat.m %>% select(-Date) %>% filter(Location == 'Kansas City', value == 'Above 20%') %>% count())[[1]]
+kc.total <- (dat.m %>% select(-Date) %>% filter(Location == 'Kansas City') %>% count())[[1]]
+
+kc.high.tips <- (kc.fifteen + kc.abovetwenty) / kc.total
+
+min.fifteen <- (dat.m %>% select(-Date) %>% filter(Location == 'Minneapolis', value == '15-20%') %>% count())[[1]]
+min.abovetwenty <- (dat.m %>% select(-Date) %>% filter(Location == 'Minneapolis', value == 'Above 20%') %>% count())[[1]]
+min.total <- (dat.m %>% select(-Date) %>% filter(Location == 'Minneapolis') %>% count())[[1]]
+
+min.high.tips <- (min.fifteen + min.abovetwenty) / min.total
+
+stl.fifteen <- (dat.m %>% select(-Date) %>% filter(Location == 'St. Louis', value == '15-20%') %>% count())[[1]]
+stl.abovetwenty <- (dat.m %>% select(-Date) %>% filter(Location == 'St. Louis', value == 'Above 20%') %>% count())[[1]]
+stl.total <- (dat.m %>% select(-Date) %>% filter(Location == 'St. Louis') %>% count())[[1]]
+
+stl.high.tips <- (stl.fifteen + stl.abovetwenty) / stl.total
+
+mem.fifteen <- (dat.m %>% select(-Date) %>% filter(Location == 'Memphis', value == '15-20%') %>% count())[[1]]
+mem.abovetwenty <- (dat.m %>% select(-Date) %>% filter(Location == 'Memphis', value == 'Above 20%') %>% count())[[1]]
+mem.total <- (dat.m %>% select(-Date) %>% filter(Location == 'Memphis') %>% count())[[1]]
+
+mem.high.tips <- (mem.fifteen + mem.abovetwenty) / mem.total
+
+oma.fifteen <- (dat.m %>% select(-Date) %>% filter(Location == 'Omaha', value == '15-20%') %>% count())[[1]]
+oma.abovetwenty <- (dat.m %>% select(-Date) %>% filter(Location == 'Omaha', value == 'Above 20%') %>% count())[[1]]
+oma.total <- (dat.m %>% select(-Date) %>% filter(Location == 'Omaha') %>% count())[[1]]
+
+oma.high.tips <- (oma.fifteen + oma.abovetwenty) / oma.total
+
+high.tips <- c(kc.high.tips, min.high.tips, stl.high.tips, mem.high.tips, oma.high.tips)
+high.tips.names <- c('Kansas City', 'Minneapolis', 'St. Louis', 'Memphis', 'Omaha')
+high.tips.df <- data.frame(Location=high.tips.names, Tips=high.tips)
+
+ggplot(high.tips.df, aes(x=Location, y=Tips)) +
+  geom_bar(stat="identity") +
+  geom_hline(yintercept=0.5, col="red")
+@
+
+<<tipsbyitem, fig.height=4, fig.width=4, fig.align='center', fig.cap="Good tips percentage by items purchase. The red line indicates 0.50, and the blue line indicates the mean.", warning=F, error=F, message=F>>=
+dat$Tip.Type <- dat$Tip.Buckets
+dat$Tip.Type[which(dat$Tip.Type == 'None')] <- 'Bad'
+dat$Tip.Type[which(dat$Tip.Type == 'Below 10%')] <- 'Bad'
+dat$Tip.Type[which(dat$Tip.Type == '10-15%')] <- 'Bad'
+dat$Tip.Type[which(dat$Tip.Type == '15-20%')] <- 'Good'
+dat$Tip.Type[which(dat$Tip.Type == 'Above 20%')] <- 'Good'
+dat$Tip.Type <- factor(dat$Tip.Type, levels=(c('Good', 'Bad')))
+dat.subset <- dat %>% select(Tip.Type, 
+                             #Location, 
+                             #Table.Size, 
+                             App.Lettuce.Wraps, 
+                             App.Buffalo.Wings,
+                             App.Garlic.Bread,
+                             App.Bruchetta,
+                             App.Crab.Cakes,
+                             Salad.Vinaigrette,
+                             Salad.House,
+                             Salad.1000.Islands,
+                             Salad.Caesar,
+                             Entree.Vegetarian,
+                             Entree.Chicken,
+                             Entree.Steak,
+                             Entree.Pork,
+                             Entree.Seafood,
+                             Dessert.Cheesecake,
+                             Dessert.Fruit,
+                             Dessert.Tiramisu,
+                             Dessert.Apple.Pie,
+                             NA.Water,
+                             NA.Fruit.Juice,
+                             NA.Pellegrino,
+                             NA.Diet.Soda,
+                             NA.Soda,
+                             Wine.Chardonnay,
+                             Wine.Shiraz,
+                             Wine.Merlot,
+                             Wine.Voigner,
+                             Other.Drinks.Rum,
+                             Other.Drinks.Gin,
+                             Other.Drinks.Scotch,
+                             Other.Drinks.Margarita,
+                             Payment.Method.Credit.Card,
+                             Payment.Method.Cash,
+                             Payment.Method.Check)
+
+good.tip.lettuce <- (dat.subset %>% select(Tip.Type, App.Lettuce.Wraps) %>% filter(App.Lettuce.Wraps > 0, Tip.Type == 'Good') %>% count(App.Lettuce.Wraps))$n / 
+  (dat.subset %>% select(Tip.Type, App.Lettuce.Wraps) %>% filter(App.Lettuce.Wraps > 0) %>% count(App.Lettuce.Wraps))$n
+good.tip.buffalo <- (dat.subset %>% select(Tip.Type, App.Buffalo.Wings) %>% filter(App.Buffalo.Wings > 0, Tip.Type == 'Good') %>% count(App.Buffalo.Wings))$n / 
+  (dat.subset %>% select(Tip.Type, App.Buffalo.Wings) %>% filter(App.Buffalo.Wings > 0) %>% count(App.Buffalo.Wings))$n
+good.tip.garlic <- (dat.subset %>% select(Tip.Type, App.Garlic.Bread) %>% filter(App.Garlic.Bread > 0, Tip.Type == 'Good') %>% count(App.Garlic.Bread))$n / 
+  (dat.subset %>% select(Tip.Type, App.Garlic.Bread) %>% filter(App.Garlic.Bread > 0) %>% count(App.Garlic.Bread))$n
+good.tip.bruchetta <- (dat.subset %>% select(Tip.Type, App.Bruchetta) %>% filter(App.Bruchetta > 0, Tip.Type == 'Good') %>% count(App.Bruchetta))$n / 
+  (dat.subset %>% select(Tip.Type, App.Bruchetta) %>% filter(App.Bruchetta > 0) %>% count(App.Bruchetta))$n
+good.tip.crab <- (dat.subset %>% select(Tip.Type, App.Crab.Cakes) %>% filter(App.Crab.Cakes > 0, Tip.Type == 'Good') %>% count(App.Crab.Cakes))$n / 
+  (dat.subset %>% select(Tip.Type, App.Crab.Cakes) %>% filter(App.Crab.Cakes > 0) %>% count(App.Crab.Cakes))$n
+good.tip.vinaigrette <- (dat.subset %>% select(Tip.Type, Salad.Vinaigrette) %>% filter(Salad.Vinaigrette > 0, Tip.Type == 'Good') %>% count(Salad.Vinaigrette))$n / 
+  (dat.subset %>% select(Tip.Type, Salad.Vinaigrette) %>% filter(Salad.Vinaigrette > 0) %>% count(Salad.Vinaigrette))$n
+good.tip.house <- (dat.subset %>% select(Tip.Type, Salad.House) %>% filter(Salad.House > 0, Tip.Type == 'Good') %>% count(Salad.House))$n / 
+  (dat.subset %>% select(Tip.Type, Salad.House) %>% filter(Salad.House > 0) %>% count(Salad.House))$n
+good.tip.1000 <- (dat.subset %>% select(Tip.Type, Salad.1000.Islands) %>% filter(Salad.1000.Islands > 0, Tip.Type == 'Good') %>% count(Salad.1000.Islands))$n / 
+  (dat.subset %>% select(Tip.Type, Salad.1000.Islands) %>% filter(Salad.1000.Islands > 0) %>% count(Salad.1000.Islands))$n
+good.tip.caesar <- (dat.subset %>% select(Tip.Type, Salad.Caesar) %>% filter(Salad.Caesar > 0, Tip.Type == 'Good') %>% count(Salad.Caesar))$n / 
+  (dat.subset %>% select(Tip.Type, Salad.Caesar) %>% filter(Salad.Caesar > 0) %>% count(Salad.Caesar))$n
+good.tip.veg <- (dat.subset %>% select(Tip.Type, Entree.Vegetarian) %>% filter(Entree.Vegetarian > 0, Tip.Type == 'Good') %>% count(Entree.Vegetarian))$n / 
+  (dat.subset %>% select(Tip.Type, Entree.Vegetarian) %>% filter(Entree.Vegetarian > 0) %>% count(Entree.Vegetarian))$n
+good.tip.chicken <- (dat.subset %>% select(Tip.Type, Entree.Chicken) %>% filter(Entree.Chicken > 0, Tip.Type == 'Good') %>% count(Entree.Chicken))$n / 
+  (dat.subset %>% select(Tip.Type, Entree.Chicken) %>% filter(Entree.Chicken > 0) %>% count(Entree.Chicken))$n
+good.tip.steak <- (dat.subset %>% select(Tip.Type, Entree.Steak) %>% filter(Entree.Steak > 0, Tip.Type == 'Good') %>% count(Entree.Steak))$n / 
+  (dat.subset %>% select(Tip.Type, Entree.Steak) %>% filter(Entree.Steak > 0) %>% count(Entree.Steak))$n
+good.tip.pork <- (dat.subset %>% select(Tip.Type, Entree.Pork) %>% filter(Entree.Pork > 0, Tip.Type == 'Good') %>% count(Entree.Pork))$n / 
+  (dat.subset %>% select(Tip.Type, Entree.Pork) %>% filter(Entree.Pork > 0) %>% count(Entree.Pork))$n
+good.tip.sea <- (dat.subset %>% select(Tip.Type, Entree.Seafood) %>% filter(Entree.Seafood > 0, Tip.Type == 'Good') %>% count(Entree.Seafood))$n / 
+  (dat.subset %>% select(Tip.Type, Entree.Seafood) %>% filter(Entree.Seafood > 0) %>% count(Entree.Seafood))$n
+good.tip.cheesecake <- (dat.subset %>% select(Tip.Type, Dessert.Cheesecake) %>% filter(Dessert.Cheesecake > 0, Tip.Type == 'Good') %>% count(Dessert.Cheesecake))$n / 
+  (dat.subset %>% select(Tip.Type, Dessert.Cheesecake) %>% filter(Dessert.Cheesecake > 0) %>% count(Dessert.Cheesecake))$n
+good.tip.fruit <- (dat.subset %>% select(Tip.Type, Dessert.Fruit) %>% filter(Dessert.Fruit > 0, Tip.Type == 'Good') %>% count(Dessert.Fruit))$n / 
+  (dat.subset %>% select(Tip.Type, Dessert.Fruit) %>% filter(Dessert.Fruit > 0) %>% count(Dessert.Fruit))$n
+good.tip.tiramisu <- (dat.subset %>% select(Tip.Type, Dessert.Tiramisu) %>% filter(Dessert.Tiramisu > 0, Tip.Type == 'Good') %>% count(Dessert.Tiramisu))$n / 
+  (dat.subset %>% select(Tip.Type, Dessert.Tiramisu) %>% filter(Dessert.Tiramisu > 0) %>% count(Dessert.Tiramisu))$n
+good.tip.applepie <- (dat.subset %>% select(Tip.Type, Dessert.Apple.Pie) %>% filter(Dessert.Apple.Pie > 0, Tip.Type == 'Good') %>% count(Dessert.Apple.Pie))$n / 
+  (dat.subset %>% select(Tip.Type, Dessert.Apple.Pie) %>% filter(Dessert.Apple.Pie > 0) %>% count(Dessert.Apple.Pie))$n
+good.tip.water <- (dat.subset %>% select(Tip.Type, NA.Water) %>% filter(NA.Water > 0, Tip.Type == 'Good') %>% count(NA.Water))$n / 
+  (dat.subset %>% select(Tip.Type, NA.Water) %>% filter(NA.Water > 0) %>% count(NA.Water))$n
+good.tip.juice <- (dat.subset %>% select(Tip.Type, NA.Fruit.Juice) %>% filter(NA.Fruit.Juice > 0, Tip.Type == 'Good') %>% count(NA.Fruit.Juice))$n / 
+  (dat.subset %>% select(Tip.Type, NA.Fruit.Juice) %>% filter(NA.Fruit.Juice > 0) %>% count(NA.Fruit.Juice))$n
+good.tip.pellegrino <- (dat.subset %>% select(Tip.Type, NA.Pellegrino) %>% filter(NA.Pellegrino > 0, Tip.Type == 'Good') %>% count(NA.Pellegrino))$n / 
+  (dat.subset %>% select(Tip.Type, NA.Pellegrino) %>% filter(NA.Pellegrino > 0) %>% count(NA.Pellegrino))$n
+good.tip.diet <- (dat.subset %>% select(Tip.Type, NA.Diet.Soda) %>% filter(NA.Diet.Soda > 0, Tip.Type == 'Good') %>% count(NA.Diet.Soda))$n / 
+  (dat.subset %>% select(Tip.Type, NA.Diet.Soda) %>% filter(NA.Diet.Soda > 0) %>% count(NA.Diet.Soda))$n
+good.tip.soda <- (dat.subset %>% select(Tip.Type, NA.Soda) %>% filter(NA.Soda > 0, Tip.Type == 'Good') %>% count(NA.Soda))$n / 
+  (dat.subset %>% select(Tip.Type, NA.Soda) %>% filter(NA.Soda > 0) %>% count(NA.Soda))$n
+good.tip.chardonnay <- (dat.subset %>% select(Tip.Type, Wine.Chardonnay) %>% filter(Wine.Chardonnay > 0, Tip.Type == 'Good') %>% count(Wine.Chardonnay))$n / 
+  (dat.subset %>% select(Tip.Type, Wine.Chardonnay) %>% filter(Wine.Chardonnay > 0) %>% count(Wine.Chardonnay))$n
+good.tip.shiraz <- (dat.subset %>% select(Tip.Type, Wine.Shiraz) %>% filter(Wine.Shiraz > 0, Tip.Type == 'Good') %>% count(Wine.Shiraz))$n / 
+  (dat.subset %>% select(Tip.Type, Wine.Shiraz) %>% filter(Wine.Shiraz > 0) %>% count(Wine.Shiraz))$n
+good.tip.merlot <- (dat.subset %>% select(Tip.Type, Wine.Merlot) %>% filter(Wine.Merlot > 0, Tip.Type == 'Good') %>% count(Wine.Merlot))$n / 
+  (dat.subset %>% select(Tip.Type, Wine.Merlot) %>% filter(Wine.Merlot > 0) %>% count(Wine.Merlot))$n
+good.tip.voigner <- (dat.subset %>% select(Tip.Type, Wine.Voigner) %>% filter(Wine.Voigner > 0, Tip.Type == 'Good') %>% count(Wine.Voigner))$n / 
+  (dat.subset %>% select(Tip.Type, Wine.Voigner) %>% filter(Wine.Voigner > 0) %>% count(Wine.Voigner))$n
+good.tip.rum <- (dat.subset %>% select(Tip.Type, Other.Drinks.Rum) %>% filter(Other.Drinks.Rum > 0, Tip.Type == 'Good') %>% count(Other.Drinks.Rum))$n / 
+  (dat.subset %>% select(Tip.Type, Other.Drinks.Rum) %>% filter(Other.Drinks.Rum > 0) %>% count(Other.Drinks.Rum))$n
+good.tip.gin <- (dat.subset %>% select(Tip.Type, Other.Drinks.Gin) %>% filter(Other.Drinks.Gin > 0, Tip.Type == 'Good') %>% count(Other.Drinks.Gin))$n / 
+  (dat.subset %>% select(Tip.Type, Other.Drinks.Gin) %>% filter(Other.Drinks.Gin > 0) %>% count(Other.Drinks.Gin))$n
+good.tip.scotch <- (dat.subset %>% select(Tip.Type, Other.Drinks.Scotch) %>% filter(Other.Drinks.Scotch > 0, Tip.Type == 'Good') %>% count(Other.Drinks.Scotch))$n / 
+  (dat.subset %>% select(Tip.Type, Other.Drinks.Scotch) %>% filter(Other.Drinks.Scotch > 0) %>% count(Other.Drinks.Scotch))$n
+good.tip.margarita <- (dat.subset %>% select(Tip.Type, Other.Drinks.Margarita) %>% filter(Other.Drinks.Margarita > 0, Tip.Type == 'Good') %>% count(Other.Drinks.Margarita))$n / 
+  (dat.subset %>% select(Tip.Type, Other.Drinks.Margarita) %>% filter(Other.Drinks.Margarita > 0) %>% count(Other.Drinks.Margarita))$n
+
+good.tip.credit <- (dat.subset %>% select(Tip.Type, Payment.Method.Credit.Card) %>% filter(Payment.Method.Credit.Card > 0, Tip.Type == 'Good') %>% count(Payment.Method.Credit.Card))$n / 
+  (dat.subset %>% select(Tip.Type, Payment.Method.Credit.Card) %>% filter(Payment.Method.Credit.Card > 0) %>% count(Payment.Method.Credit.Card))$n
+good.tip.cash <- (dat.subset %>% select(Tip.Type, Payment.Method.Cash) %>% filter(Payment.Method.Cash > 0, Tip.Type == 'Good') %>% count(Payment.Method.Cash))$n / 
+  (dat.subset %>% select(Tip.Type, Payment.Method.Cash) %>% filter(Payment.Method.Cash > 0) %>% count(Payment.Method.Cash))$n
+good.tip.check <- (dat.subset %>% select(Tip.Type, Payment.Method.Check) %>% filter(Payment.Method.Check > 0, Tip.Type == 'Good') %>% count(Payment.Method.Check))$n / 
+  (dat.subset %>% select(Tip.Type, Payment.Method.Check) %>% filter(Payment.Method.Check > 0) %>% count(Payment.Method.Check))$n
+
+good.tip.df <- data.frame(App.Lettuce.Wraps=good.tip.lettuce,
+                          App.Buffalo.Wings=good.tip.buffalo,
+                          App.Garlic.Bread=good.tip.garlic,
+                          App.Bruchetta=good.tip.bruchetta,
+                          App.Crab.Cakes=good.tip.crab,
+                          Salad.Vinaigrette=good.tip.vinaigrette,
+                          Salad.House=good.tip.house,
+                          Salad.1000.Islands=good.tip.1000,
+                          Salad.Caesar=good.tip.caesar,
+                          Entree.Vegetarian=good.tip.veg,
+                          Entree.Chicken=good.tip.chicken,
+                          Entree.Steak=good.tip.steak,
+                          Entree.Pork=good.tip.pork,
+                          Entree.Seafood=good.tip.sea,
+                          Dessert.Cheesecake=good.tip.cheesecake,
+                          Dessert.Fruit=good.tip.fruit,
+                          Dessert.Tiramisu=good.tip.tiramisu,
+                          Dessert.Apple.Pie=good.tip.applepie,
+                          NA.Water=good.tip.water,
+                          NA.Fruit.Juice=good.tip.juice,
+                          NA.Pellegrino=good.tip.pellegrino,
+                          NA.Diet.Soda=good.tip.diet,
+                          NA.Soda=good.tip.soda,
+                          Wine.Chardonnay=good.tip.chardonnay,
+                          Wine.Shiraz=good.tip.shiraz,
+                          Wine.Merlot=good.tip.merlot,
+                          Wine.Voigner=good.tip.voigner,
+                          Other.Rum=good.tip.rum,
+                          Other.Gin=good.tip.gin,
+                          Other.Scotch=good.tip.scotch,
+                          Other.Margarita=good.tip.margarita)
+                          #Payment.Method.Credit=good.tip.credit,
+                          #Payment.Method.Cash=good.tip.cash,
+                          #Payment.Method.Check=good.tip.check)
+
+good.tip.df.m <- melt(good.tip.df)
+good.tip.df.m$variable <- factor(good.tip.df.m$variable, levels = good.tip.df.m$variable[order(good.tip.df.m$value)])
+
+ggplot(good.tip.df.m, aes(x=variable, y=value)) +
+  geom_bar(stat="identity") +
+  geom_hline(yintercept = 0.5, col="red") +
+  geom_hline(yintercept = mean(good.tip.df.m$value), col="blue") +
+  coord_flip() +
+  labs(title="Proportion of 'good tippers'", x="Item Purchased", y="Proportion of 'Good Tippers' ") 
+@
+
+Perhaps those who purchase certain items are more likely to tip better than those who purchase others. While there did not
+seem to be enough evidence that indicate any of these item purchases could predict a good tip, some of the items do seem to
+fall above or below the mean proportion of good tips. We can see in Figure \ref{fig:tipsbyitem} patrons who purchase Buffalo Wings
+as their appetizer, are more likely to tip well, that is, 15\% or above, while those who purchased rum as their drink, were slightly less
+likely to tip well, but over half of all patrons who purchased any of the items was more likely to tip well than not. Overall, the  
+likelihood for a party being "good tippers" was about \Sexpr{round(100 * mean(good.tip.df.m$value))}\%, 
+so we see this as a good news story.
+
+\section{Conclusion}
+
+While mining data through each of the location, steak stands out as a top seller for entrees but is closely
+followed by chicken as well as vegetarian options. A conclusion that can be drawn by this data is that steak is prepared well, and based on typical meat price points,
+customers are willing to spend money for a well-prepared entrée. To improve the order rates of the other entrees, recipes can be improved and advertising can be increased.
+However, under the assumption that steak is the highest priced entrée, each location is doing well with maintaining the highest profitability possible. 
+In order to lower costs, each location could build partnerships with vendors providing this type of meat in hopes of receiving lower prices and turning a higher profit. 
+
+For Appetizers at each location, there are a lot of people not choosing an appetizer before their salad or entrée. This can be concluded that appetizers are not well advertised 
+on the menu or within a restaurant. Because the restaurant needs to be prepared for someone to order an appetizer, there is a risk that ingredients are being wasted - therefore 
+lowering the potential profits of the restaurant. A conclusion that can be drawn from this data is to increase the pairings of the appetizers and entrees and encourage 
+customers to purchase an appetizer through "paired" deals. 
+
+For desserts, cheesecake is the definite choice for the customers at each location across the board. The conclusion of this data can be drawn from the cheesecake well-prepared
+dish as well as perhaps "word of mouth" advertising. Most restaurants experience a "chain" reaction for customer orders. Once one person speaks about the quality of a dish,
+more people are willing to try it. Chardonnay is also a popular pairing at each location with the cheesecake. In order to increase profit, the restaurant could do a cheesecake
+and chardonnay pairing to increase customer dessert activity.
+
+As stated before, there is not a specific correlation of data between each location. There are definitely top sellers and lower sellers, but each entrée, desserts, and appetizer
+has a decent showing at each location. We believe advertising and entrée and appetizer pairings are a good idea to increase the profit of each restaurant. Tipping is sufficient
+at each restaurant for the most part which shows that customer service is doing well. We conclude that the menu and restaurant appeal would help to increase profit and lower costs.
+
+%Sets the bibliography style to UNSRT and imports the 
+%bibliography file "samples.bib".
+\bibliographystyle{unsrt}
+\bibliography{deliverable2}
+
+\end{document}

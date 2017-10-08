@@ -1,0 +1,380 @@
+---
+title: "Suite Spot Data Mining"
+author: "Brian Detweiler, Jordan Hathaway, Kyle Hampton"
+date: "September 20, 2017"
+bibliography: deliverable2.bib
+biblio-style: "numeric-comp"
+link-citations: true
+abstract: "We believe there is knowledge to be gleaned by mining the data captured by Suite Spot and its locations. By applying data mining techniques such as exploratory data analysis, we are able to extract useful information about the organization as a whole as well as drilling down to each individual location. This research is fully reproducible and the full source can be found in the references."
+output:
+    pdf_document:
+        includes:
+            fig_caption: yes
+            in_header: mystyles.sty
+    fig_width: 7
+    fig_height: 6
+    nocite: | 
+      @this
+---
+
+# Overview
+
+Data mining is the process of identifying information from vast amounts of data. Data mining utilizes employees and automated programs to analyze an organization’s data looking for trends, 
+patterns, anomalies, or outliers, with the hope of gleaning actionable insights from the evaluation of the data. Data mining seeks to transform volumes of data that a business collects into 
+information that businesses can use in ways such as better understanding their customers, evaluating product sales performance, or even improving processes. With contributions from statistics, 
+artificial intelligence, and data visualization and leveraging business analysis and technical development, there a myriad of ways to conduct data mining and the field of data mining continues 
+to grow today. 
+
+Regarding data mining, Thomas Davenport in the Harvard Business Review details, “The latest strategic weapon for companies is analytical decision making.” [@bi]
+Davenport further explain companies “have used analytics to better understand their customers and optimize their extended supply chains to maximize their returns on investment while providing 
+the best customer service."  Most importantly, Davenport concludes "the level of success is highly dependent on a company understand its customers, vendors, business processes, 
+and the extended supply chain," [@bi] which can be done using data mining.
+
+A great, easy to comprehend example of data mining is data mining used in retail stores on customer and transaction data. Upon analyzing this data, data mining can reveal unknown insights 
+regarding customer shopping habits, transaction size or frequency, and even specific product sales details. A excellent real-world application of data mining comes from Target. As described
+by Forbes “Every time you go shopping, you share intimate details about your consumption patterns with retailers. And many of those retailers are studying those details to figure out what you
+like, what you need, and which coupons are most likely to make you happy.” [@forbes] One of the ways Target uses data mining is to try "to hook parents-to-be at that crucial moment before they 
+turn into rampant - and loyal - buyers of all things pastel, plastic, and miniature." [@forbes] 
+
+As such, Target applies data mining techniques to their customer details and buying habits to identify customers on the verge of becoming parents, sometimes before the customers even realize it 
+themselves. Target created a 'pregnancy score' based on customer buying habits of key items such as unscented lotion, supplements, and big bags of cotton balls. Based on the pregnancy score,
+Target began sending automatic mail coupons for nursery furniture and maternity clothing to customers exceeding a certain score. The article further sites an instance where Target new one man’s
+high school age daughter was pregnant before he did. The man found out about the pregnancy after seeing Target baby clothes coupons in the mail. Target used data mining to better understand their 
+customers and in this case, because of data mining, Target advantageously knows more about their customers than their customers know about themselves.
+
+The chief benefit of data mining is identifying actionable information that is advantageous to the organization that may not have been discovered otherwise. Companies collect troves of data through 
+a myriad of sensor, device, and input network each day. Unfortunately, much of that data is never used. Data mining puts this previously untapped data to use by uncovering hidden value, unknown insights, 
+and quite unexpected realizations within the data. In describing the benefits of data mining, Dr. Arno Penzias explained, "If you’re not doing this, you’re out of business." [@bi] 
+Dr. Penzias frames data mining not exactly as a benefit, but more so a necessary means of survival in today’s hypercompetitive business marketplace. 
+
+Data mining is often hypothesis-driven, which allows the company to ask and seek answers a plethora of critical questions. By using hypothesis testing, companies can use the data they already 
+have to answer the outstanding questions necessary to improve their business. Asking good questions are key to hypothesis-driven data mining and included are several questions
+SuiteSpot may attempt to answer using data mining:
+
+  1. What are the most popular dates for dinner at each hotel location?
+  2. As storing inventory, particularly perishable items, for an extended period of time can be costly, what appetizers, entrees, and desserts are the least popular?
+  3. What desserts are most often selected with what entrees?
+  4. What appetizers and entrees sell the most wine along with the dinner?
+  5. How many tables does each restaurant turn over in a night and how fast on average does each table turn over?
+  6. What is the average table size in each restaurant and what is the average party size at each restaurant?
+  7. Do certain menu items, either food or drinks, sell better in certain locations?
+  8. What is the most common payment method used and does payment method have any relation to tip amount?
+  9. Does the day of the week of the dinner date correlate to any food or drink purchases?
+  10. Which restaurants receive the highest amount in tips and which food and drink items correlate with the highest amount in tips?
+
+To even perform data mining, SuiteSpot will first need to have adequate information technology infrastructure on hand. On the software side, SuiteSpot will need the 
+appropriate data mining software. Many big players in the software world publish their own data mining software such as IBM SPSS, Statistica, and SAS.
+SuiteSpot would also be able to use business intelligence software such as SAP, IBM Cognos, or Teradata for data mining although their capabilities are limited when 
+compared to data mining software. SuiteSpot will also likely want to have a software platform and analytics code language such as R, SQL, or Python so employees can 
+conduct their own, ad-hoc type analyses. Additionally, SuiteSpot will need to have their data stored in a data warehouse or a collection of data marts so these 
+software tools will be able to analyze the data.
+
+On the hardware side, SuiteSpot will need server space to store the data and hold the software necessary for data mining. SuiteSpot has plenty of options in this arena 
+and they can choose from a physical/on-premise hardware architecture, a cloud-based architecture such as Amazon Web Services (AWS), or a mix of both. 
+SuiteSpot should decide on their hardware strategy first as without any hardware to back it up, software is useless.
+
+# Data Mining
+
+## Exploratory Data Analysis
+
+The data must be first read in and some cleaning must be done. 
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
+library(tidyverse)
+library(xlsx)
+library(ggplot2)
+library(reshape2)
+library(glmnet)
+library(TSA)
+library(zoo)
+library(xts)
+library(forecast)
+library(GGally)
+
+dat <- read.xlsx('3-data-mining-data.xls', sheetIndex = 1)
+dat <- as_tibble(dat)
+dat <- dat %>% filter(!is.na(Date))
+dat$Tip <- as.character(dat$Tip)
+
+# bucket tip ranges by the medians
+dat$Tip.Buckets <- dat$Tip
+dat$Tip[which(dat$Tip == 'None')] <- '0.0'
+dat$Tip[which(dat$Tip == 'Below 10%')] <- '0.05'
+dat$Tip[which(dat$Tip == '10-15%')] <- '0.10'
+dat$Tip[which(dat$Tip == '15-20%')] <- '0.15'
+dat$Tip[which(dat$Tip == 'Above 20%')] <- '0.20'
+dat$Tip <- as.numeric(dat$Tip)
+
+# One-Hot encoding
+dat$Appetizer <- as.character(dat$Appetizer)
+
+dat$App.Lettuce.Wraps <- ifelse(test = dat$Appetizer == 'Lettuce Wraps', 1, 0)
+dat$App.Buffalo.Wings <- ifelse(test = dat$Appetizer == 'Buffalo Wings', 1, 0)
+dat$App.Garlic.Bread <- ifelse(test = dat$Appetizer == 'Garlic Bread', 1, 0)
+dat$App.Bruchetta <- ifelse(test = dat$Appetizer == 'Bruchetta', 1, 0)
+dat$App.Crab.Cakes <- ifelse(test = dat$Appetizer == 'Crab Cakes', 1, 0)
+
+dat$Salad <- as.character(dat$Salad)
+dat$Salad.Vinaigrette <- ifelse(test = dat$Salad == 'Vinaigrette', 1, 0)
+dat$Salad.House <- ifelse(test = dat$Salad == 'House', 1, 0)
+dat$Salad.1000.Islands <- ifelse(test = dat$Salad == '1000 Islands', 1, 0)
+dat$Salad.Caesar <- ifelse(test = dat$Salad == 'Caesar', 1, 0)
+
+dat$Entree.Type <- as.character(dat$Entree.Type)
+dat$Entree.Vegetarian <- ifelse(test = dat$Entree.Type == 'Vegetarian', 1, 0)
+dat$Entree.Chicken <- ifelse(test = dat$Entree.Type == 'Chicken', 1, 0)
+dat$Entree.Steak <- ifelse(test = dat$Entree.Type == 'Steak', 1, 0)
+dat$Entree.Pork <- ifelse(test = dat$Entree.Type == 'Pork', 1, 0)
+dat$Entree.Seafood <- ifelse(test = dat$Entree.Type == 'Seafood', 1, 0)
+
+
+dat$Dessert <- as.character(dat$Dessert)
+dat$Dessert.Cheesecake <- ifelse(test = dat$Dessert == 'Cheesecake', 1, 0)
+dat$Dessert.Fruit <- ifelse(test = dat$Dessert == 'Fruit', 1, 0)
+dat$Dessert.Tiramisu <- ifelse(test = dat$Dessert == 'Tiramisu', 1, 0)
+dat$Dessert.Apple.Pie <- ifelse(test = dat$Dessert == 'Apple Pie', 1, 0)
+
+
+dat$Non.Alcoholic.Drinks <- as.character(dat$Non.Alcoholic.Drinks)
+dat$NA.Water <- ifelse(test = dat$Non.Alcoholic.Drinks == 'Water', 1, 0)
+dat$NA.Fruit.Juice <- ifelse(test = dat$Non.Alcoholic.Drinks == 'Fruit Juice', 1, 0)
+dat$NA.Pellegrino <- ifelse(test = dat$Non.Alcoholic.Drinks == 'Pellegrino', 1, 0)
+dat$NA.Diet.Soda <- ifelse(test = dat$Non.Alcoholic.Drinks == 'Diet Soda', 1, 0)
+dat$NA.Soda <- ifelse(test = dat$Non.Alcoholic.Drinks == 'Soda', 1, 0)
+
+dat$Wine <- as.character(dat$Wine)
+dat$Wine.Chardonnay <- ifelse(test = dat$Wine == 'Chardonnay', 1, 0)
+dat$Wine.Shiraz <- ifelse(test = dat$Wine == 'Shiraz', 1, 0)
+dat$Wine.Merlot <- ifelse(test = dat$Wine == 'Merlot', 1, 0)
+dat$Wine.Voigner <- ifelse(test = dat$Wine == 'Voigner', 1, 0)
+
+dat$Other.Drinks <- as.character(dat$Other.Drinks)
+dat$Other.Drinks.Rum <- ifelse(test = dat$Other.Drinks == 'Rum', 1, 0)
+dat$Other.Drinks.Gin <- ifelse(test = dat$Other.Drinks == 'Gin', 1, 0)
+dat$Other.Drinks.Scotch <- ifelse(test = dat$Other.Drinks == 'Scotch', 1, 0)
+dat$Other.Drinks.Margarita <- ifelse(test = dat$Other.Drinks == 'Margarita', 1, 0)
+
+dat$Payment.Method <- as.character(dat$Payment.Method)
+dat$Payment.Method.Credit.Card <- ifelse(test = dat$Payment.Method == 'Credit Card', 1, 0)
+dat$Payment.Method.Cash <- ifelse(test = dat$Payment.Method == 'Cash', 1, 0)
+dat$Payment.Method.Check <- ifelse(test = dat$Payment.Method == 'Check', 1, 0)
+
+dat$Date <- as.POSIXlt(as.character(dat$Date), format = '%m/%d/%Y')
+
+# Order by Date
+dat <- dat[order(dat$Date),]
+
+# Remove all the categorical variables, and leave only the encoded ones
+tmp <- dat %>% select(-Appetizer, -Salad, -Entree.Type, -Dessert, -Non.Alcoholic.Drinks, -Wine, -Other.Drinks, -Payment.Method)
+
+dat.df <- as.data.frame(tmp)
+```
+
+## Food and Drink Popularity
+
+```{r, echo=F}
+dat.m <- dat %>% select(Date, Appetizer, Salad, Entree.Type, Dessert)
+dat.m <- melt(data = dat.m, id.vars = c('Date'))
+```
+
+```{r, echo=F}
+dat.m <- within(dat.m, 
+                   value <- factor(value, 
+                                      levels=names(sort(table(value), 
+                                                        decreasing=TRUE))))
+ggplot(data=subset(dat.m, value != 'None'), aes(variable, ..count..)) + 
+  geom_bar(aes(fill = value), position = "dodge") +
+  labs(title="Food by Type", x="Food Category", y="Number Ordered")
+```
+
+```{r, echo=F}
+dat.m <- dat %>% select(Date, Non.Alcoholic.Drinks, Wine, Other.Drinks)
+dat.m <- melt(data = dat.m, id.vars = c('Date'))
+```
+
+```{r, echo=F}
+dat.m <- within(dat.m, 
+                   value <- factor(value, 
+                                      levels=names(sort(table(value), 
+                                                        decreasing=TRUE))))
+ggplot(data=subset(dat.m, value != 'None'), aes(variable, ..count..)) + 
+  geom_bar(aes(fill = value), position = "dodge") +
+  labs(title="Drinks By Type", x="Drink Category", y="Number Ordered")
+```
+
+## Food and Drink Popularity by Location
+```{r, echo=F}
+dat.m <- dat %>% select(Date, Location, Appetizer, Salad, Entree.Type, Dessert)
+dat.m <- melt(data = dat.m, id.vars = c('Date', 'Location'))
+dat.m$Location[which(dat.m$Location == 1)] <- 'Omaha'
+dat.m$Location[which(dat.m$Location == 2)] <- 'Kansas City'
+dat.m$Location[which(dat.m$Location == 3)] <- 'Minneapolis'
+dat.m$Location[which(dat.m$Location == 4)] <- 'St. Louis'
+dat.m$Location[which(dat.m$Location == 5)] <- 'Memphis'
+```
+
+```{r, echo=F}
+dat.m <- within(dat.m, 
+                   value <- factor(value, 
+                                      levels=names(sort(table(value), 
+                                                        decreasing=TRUE))))
+ggplot(data=subset(dat.m, value != 'None'), aes(variable, ..count..)) + 
+  geom_bar(aes(fill = value), position = "dodge") +
+  facet_wrap(~Location, nrow=3) +
+  labs(title="Food by Type", x="Food Category", y="Number Ordered")
+```
+
+```{r, echo=F}
+dat.m <- dat %>% select(Date, Location, Non.Alcoholic.Drinks, Wine, Other.Drinks)
+dat.m <- melt(data = dat.m, id.vars = c('Date', 'Location'))
+dat.m$Location[which(dat.m$Location == 1)] <- 'Omaha'
+dat.m$Location[which(dat.m$Location == 2)] <- 'Kansas City'
+dat.m$Location[which(dat.m$Location == 3)] <- 'Minneapolis'
+dat.m$Location[which(dat.m$Location == 4)] <- 'St. Louis'
+dat.m$Location[which(dat.m$Location == 5)] <- 'Memphis'
+```
+
+```{r, echo=F}
+dat.m <- within(dat.m, 
+                   value <- factor(value, 
+                                      levels=names(sort(table(value), 
+                                                        decreasing=TRUE))))
+ggplot(data=subset(dat.m, value != 'None'), aes(variable, ..count..)) + 
+  geom_bar(aes(fill = value), position = "dodge") +
+  facet_wrap(~Location, nrow=3) +
+  labs(title="Drinks By Type", x="Drink Category", y="Number Ordered")
+```
+
+
+## Payment Method Types
+
+```{r, echo=F}
+dat.m <- dat %>% select(Date, Payment.Method)
+dat.m <- melt(data = dat.m, id.vars = c('Date'))
+```
+
+```{r, echo=F}
+ggplot(data=dat.m, aes(variable, ..count..)) + 
+  geom_bar(aes(fill = value), position = "dodge") +
+  labs(title="Payment Methods", x="", y="Count")
+```
+
+## Payment Method Types by Location
+```{r, echo=F}
+dat.m <- dat %>% select(Date, Location, Payment.Method)
+dat.m <- melt(data = dat.m, id.vars = c('Date', 'Location'))
+dat.m$Location[which(dat.m$Location == 1)] <- 'Omaha'
+dat.m$Location[which(dat.m$Location == 2)] <- 'Kansas City'
+dat.m$Location[which(dat.m$Location == 3)] <- 'Minneapolis'
+dat.m$Location[which(dat.m$Location == 4)] <- 'St. Louis'
+dat.m$Location[which(dat.m$Location == 5)] <- 'Memphis'
+```
+
+```{r, echo=F}
+dat.m <- within(dat.m, 
+                   value <- factor(value, 
+                                      levels=names(sort(table(value), 
+                                                        decreasing=TRUE))))
+ggplot(data=subset(dat.m, value != 'None'), aes(variable, ..count..)) + 
+  geom_bar(aes(fill = value), position = "dodge") +
+  facet_wrap(~Location, nrow=3) +
+  labs(title="Payment Method by Type", x="Payment Method", y="Count")
+```
+
+## Tipping Buckets
+
+```{r, echo=F}
+dat.m <- dat %>% select(Date, Tip.Buckets)
+dat.m <- melt(data = dat.m, id.vars = c('Date'))
+dat.m$value <- as.character(dat.m$value)
+```
+
+```{r, echo=F}
+dat.m <- within(dat.m, 
+                   value <- factor(value, levels=c("Above 20%", "15-20%", "10-15%", "Below 10%", "None")))
+ggplot(data=dat.m, aes(variable, ..count..)) + 
+  geom_bar(aes(fill = value), position = "dodge") +
+  labs(title="Tip Amounts", x="", y="Count")
+```
+
+## Tipping Buckets by Location
+```{r, echo=F}
+dat.m <- dat %>% select(Date, Location, Tip.Buckets)
+dat.m <- melt(data = dat.m, id.vars = c('Date', 'Location'))
+dat.m$Location[which(dat.m$Location == 1)] <- 'Omaha'
+dat.m$Location[which(dat.m$Location == 2)] <- 'Kansas City'
+dat.m$Location[which(dat.m$Location == 3)] <- 'Minneapolis'
+dat.m$Location[which(dat.m$Location == 4)] <- 'St. Louis'
+dat.m$Location[which(dat.m$Location == 5)] <- 'Memphis'
+```
+
+```{r, echo=F}
+dat.m <- within(dat.m, 
+                   value <- factor(value, levels=c("Above 20%", "15-20%", "10-15%", "Below 10%", "None")))
+ggplot(data=dat.m, aes(variable, ..count..)) + 
+  geom_bar(aes(fill = value), position = "dodge") +
+  facet_wrap(~Location, nrow=3) +
+  labs(title="Tipping Buckets", x="Tip", y="Count")
+```
+
+
+```{r, echo=F, include=F}
+
+table.ts <- data.frame(Date=dat$Date)
+table.ts <- cbind(table.ts, Omaha.Table.Size=rep(0, 1000))
+table.ts <- cbind(table.ts, KC.Table.Size=rep(0, 1000))
+table.ts <- cbind(table.ts, Minneapolis.Table.Size=rep(0, 1000))
+table.ts <- cbind(table.ts, STL.Table.Size=rep(0, 1000))
+table.ts <- cbind(table.ts, Memphis.Table.Size=rep(0, 1000))
+
+table.ts$Omaha.Table.Size[which(dat$Location == 1)] <- dat$Table.Size[which(dat$Location == 1)]
+table.ts$KC.Table.Size[which(dat$Location == 2)] <- dat$Table.Size[which(dat$Location == 2)]
+table.ts$Minneapolis.Table.Size[which(dat$Location == 3)] <- dat$Table.Size[which(dat$Location == 3)]
+table.ts$STL.Table.Size[which(dat$Location == 4)] <- dat$Table.Size[which(dat$Location == 4)]
+table.ts$Memphis.Table.Size[which(dat$Location == 5)] <- dat$Table.Size[which(dat$Location == 5)]
+
+ggplot(table.ts, aes(Date, Omaha.Table.Size)) + 
+  geom_point(color="red") +
+  geom_point(aes(Date, KC.Table.Size), color="steelblue") +
+  geom_point(aes(Date, Minneapolis.Table.Size), color="green") +
+  geom_point(aes(Date, STL.Table.Size), color="yellow") +
+  geom_point(aes(Date, Memphis.Table.Size), color="black") +
+  xlab("") +
+  ylab("Table Size")
+``` 
+
+Omaha is in red, Kansas City in blue, Minneapolis in green, St. Louis in yellow, and Memphis in black. It is difficult to detect any patterns here.
+
+### Number of Patrons Served by Location, 09/01/2016 - 08/31/2017
+```{r, echo=F}
+sums <- colSums(table.ts[,-1])
+
+table.size.df <- data.frame(Omaha=sums[[1]], KC=sums[[2]], Minneapolis=sums[[3]], St.Louis=sums[[4]], Memphis=sums[[5]])
+kable(table.size.df, format = "markdown", booktabs = TRUE, align = 'r', col.names=c('Omaha', 'KC', 'Minneapolis', 'St. Louis', 'Memphis'))
+```
+
+# Conclusions
+
+Overall, the data from each location is deeply uncorrelated. While mining data through each of the location, steak stands out as a top seller for entrees but is closely
+followed by chicken as well as vegetarian options. A conclusion that can be drawn by this data is that steak is prepared well, and based on typical meat price points,
+customers are willing to spend money for a well-prepared entrée. To improve the order rates of the other entrees, recipes can be improved and advertising can be increased.
+However, under the assumption that steak is the highest priced entrée, each location is doing well with maintaining the highest profitability possible. 
+In order to lower costs, each location could build partnerships with vendors providing this type of meat in hopes of receiving lower prices and turning a higher profit. 
+
+For Appetizers at each location, there are a lot of people not choosing an appetizer before their salad or entrée. This can be concluded that appetizers are not well advertised 
+on the menu or within a restaurant. Because the restaurant needs to be prepared for someone to order an appetizer, there is a risk that ingredients are being wasted - therefore 
+lowering the potential profits of the restaurant. A conclusion that can be drawn from this data is to increase the pairings of the appetizers and entrees and encourage 
+customers to purchase an appetizer through "paired" deals. 
+
+For desserts, cheesecake is the definite choice for the customers at each location across the board. The conclusion of this data can be drawn from the cheesecake well-prepared
+dish as well as perhaps "word of mouth" advertising. Most restaurants experience a "chain" reaction for customer orders. Once one person speaks about the quality of a dish,
+more people are willing to try it. Chardonnay is also a popular pairing at each location with the cheesecake. In order to increase profit, the restaurant could do a cheesecake
+and chardonnay pairing to increase customer dessert activity.
+
+As stated before, there is not a specific correlation of data between each location. There are definitely top sellers and lower sellers, but each entrée, desserts, and appetizer
+has a decent showing at each location. We belive advertising and entrée and appetizer pairings are a good idea to increase the profit of each restaurant. Tipping is sufficient
+at each restaurant for the most part which shows that customer service is doing well. We conclude that the menu and restaurant appeal would help to increase profit and lower costs.
+
+# References

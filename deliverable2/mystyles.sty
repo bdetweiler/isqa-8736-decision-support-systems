@@ -1,0 +1,12 @@
+\usepackage[utf8]{inputenc}
+\usepackage{url}
+\usepackage[english]{babel}
+ 
+\usepackage[backend=biber,
+            style=numeric-comp,
+            citestyle=ieee]{biblatex}
+
+%%% --- Wrap URLs in Bibliography with \url{} to get long URLs to wrap --- %%%
+\setcounter{biburlnumpenalty}{3000}
+\setcounter{biburllcpenalty}{6000}
+\setcounter{biburlucpenalty}{9000}

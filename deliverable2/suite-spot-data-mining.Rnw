@@ -773,25 +773,45 @@ so we see this as a good news story.
 
 \section{Conclusion}
 
-While mining data through each of the location, steak stands out as a top seller for entrees but is closely
-followed by chicken as well as vegetarian options. A conclusion that can be drawn by this data is that steak is prepared well, and based on typical meat price points,
-customers are willing to spend money for a well-prepared entrée. To improve the order rates of the other entrees, recipes can be improved and advertising can be increased.
-However, under the assumption that steak is the highest priced entrée, each location is doing well with maintaining the highest profitability possible. 
-In order to lower costs, each location could build partnerships with vendors providing this type of meat in hopes of receiving lower prices and turning a higher profit. 
+While mining data through each of the location, steak stands out as a top seller for entrees but is closely 
+followed by chicken as well as vegetarian options. A conclusion that can be drawn by this data is that steak
+is prepared well, and based on typical meat price points, customers are willing to spend money for a well-prepared
+entree. To improve the order rates of the other entrees, recipes can be improved and advertising can be increased.
+However, under the assumption that steak is the highest priced entre, each location is doing well with maintaining
+the highest profitability possible. In order to lower costs, each location could build partnerships with vendors 
+providing this type of meat in hopes of receiving lower prices and turning a higher profit. 
 
-For Appetizers at each location, there are a lot of people not choosing an appetizer before their salad or entrée. This can be concluded that appetizers are not well advertised 
-on the menu or within a restaurant. Because the restaurant needs to be prepared for someone to order an appetizer, there is a risk that ingredients are being wasted - therefore 
-lowering the potential profits of the restaurant. A conclusion that can be drawn from this data is to increase the pairings of the appetizers and entrees and encourage 
-customers to purchase an appetizer through "paired" deals. 
+For Appetizers at each location, there are a lot of people not choosing an appetizer before their salad or entree. 
+This can be concluded that appetizers are not well advertised on the menu or within a restaurant. Because the
+restaurant needs to be prepared for someone to order an appetizer, there is a risk that ingredients are being 
+wasted - therefore lowering the potential profits of the restaurant. A conclusion that can be drawn from this 
+data is to increase the pairings of the appetizers and entrees and encourage customers to purchase an appetizer
+through "paired" deals. 
 
-For desserts, cheesecake is the definite choice for the customers at each location across the board. The conclusion of this data can be drawn from the cheesecake well-prepared
-dish as well as perhaps "word of mouth" advertising. Most restaurants experience a "chain" reaction for customer orders. Once one person speaks about the quality of a dish,
-more people are willing to try it. Chardonnay is also a popular pairing at each location with the cheesecake. In order to increase profit, the restaurant could do a cheesecake
-and chardonnay pairing to increase customer dessert activity.
+For desserts, cheesecake is the definite choice for the customers at each location across the board. The conclusion 
+of this data can be drawn from the cheesecake well-prepared dish as well as perhaps "word of mouth" advertising.
+Most restaurants experience a "chain" reaction for customer orders. Once one person speaks about the quality of a dish,
+more people are willing to try it. Chardonnay is also a popular pairing at each location with the cheesecake.
+In order to increase profit, the restaurant could do a cheesecake and chardonnay pairing to increase customer dessert activity. 
 
-As stated before, there is not a specific correlation of data between each location. There are definitely top sellers and lower sellers, but each entrée, desserts, and appetizer
-has a decent showing at each location. We believe advertising and entrée and appetizer pairings are a good idea to increase the profit of each restaurant. Tipping is sufficient
-at each restaurant for the most part which shows that customer service is doing well. We conclude that the menu and restaurant appeal would help to increase profit and lower costs.
+The conclusion of this data mainly comes down to increasing the marketing tactics at each location and being diligent in 
+creating an inviting customer atmosphere at each hotel restaurant. As stated above, there is a dip in June sales but a
+large rise in customers during October-December. The months that are seeing the best sales happen to be during the holiday
+season - the best sales time of the year for many restaurants and hotels. With more events going on during the holiday season,
+the restaurant can in a sense go on "auto-pilot". However, once January hits, the marketing tactics need to increase. 
+As stated above a "Valentine's Day Dinner" may help increase the sales surge and a "three course" dinner option would increase 
+sales of some of the top selling items.
+
+One of the main telling signs of a good location is the amount and percentage tip the average server receives in a night. 
+St. Louis has the top location for tip percentages while Memphis is one of the lower ones. In order to increase the customer
+service in all restaurants, we may want to offer a "tip match" program as a kick-off incentive. At the end of the month, if 
+the location’s servers maintain an average of a 15\% tip, the company will match 50\% of the amount of tips.
+This incentivizes the servers to go above and beyond, and the customer will be more willing to listen to recommendations 
+and potentially spend more time and money with the restaurant. 
+
+Overall, the restaurants are doing a great job at providing customers a wide variety of options to choose from during their
+dining experience. The marketing tactics listed above will provide the extra knowledge and ideas to push each location to
+their best sales and customer retention rates. 
 
 %Sets the bibliography style to UNSRT and imports the 
 %bibliography file "samples.bib".

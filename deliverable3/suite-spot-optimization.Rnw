@@ -1,0 +1,406 @@
+%\title{Overleaf Memo Template}
+% Using the texMemo package by Rob Oakes
+\documentclass[a4paper,11pt]{texMemo}
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{amsmath}
+\usepackage{lipsum}
+\usepackage{array}
+\usepackage{float}
+\usepackage[font=small,labelfont=bf]{caption}
+
+%% Edit the header section here. To include your
+%% own logo, upload a file via the files menu.
+\memoto{All Executives and Hotel Managers}
+\memofrom{Decision Support Systems}
+\memosubject{Optimal Configuration for Luxary Suites}
+\memodate{\today}
+\logo{\includegraphics[width=0.3\textwidth]{suite-spot.png}}
+
+\begin{document}
+\maketitle
+
+
+\section{Modeling and Optimization}
+
+<<include=FALSE, cache=F>>=
+knitr::opts_chunk$set(echo = FALSE)
+library(knitr)
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+library(magrittr)
+set.seed(1)
+@
+
+<<include=F, cache=T>>=
+# setwd('/home/bdetweiler/src/Data_Science/isqa-8736-decision-support-systems/deliverable3/')
+# dat <- read.xlsx('3-data-mining-data.xls', sheetIndex = 1)
+
+rooms <- c(rep(0, 0),
+           rep(1, 2),
+           rep(2, 6),
+           rep(3, 13),
+           rep(4, 21),
+           rep(5, 33),
+           rep(6, 38),
+           rep(7, 39),
+           rep(8, 28),
+           rep(9, 16),
+           rep(10, 4))
+
+R.suite <- 285.00
+R.room <- 85.00
+U.suite <- -150.00
+V.suite <- -190.00
+U.room <- R.room * (U.suite / R.suite)
+V.room <- R.room * (V.suite / R.suite)
+
+# Simulated nights (number of suite requests)
+X <- rbinom(100000, 10, (mean(rooms)/10))
+
+@
+
+\subsection{The fully booked rooms case}
+
+
+
+Let $X$ be a random variable representing the number of suites requested for booking on a given day.
+Then $X$ follows a \textsf{binomial} distribution, $X \sim Bin(n, \theta)$. We are given some data, 
+
+
+\begin{center}
+\begin{tabular}{llllllllllll}
+ \textbf{Suite Demand} & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\
+ \textbf{Frequency}    & 0 & 2 & 6 & 13 & 21 & 33 & 38 & 39 & 28 & 16 & 4 \\ 
+\end{tabular}
+\end{center}
+
+Visualizing this as a histogram as shown in Figure \ref{fig:suitedist}, we believe that suite demand can be modeled with a \textsf{binomial} distribution.
+
+<<suitedist, fig.height=2, fig.width=4, fig.align='center', fig.pos='H', fig.cap='Distribution of suite demand.', cache=T>>=
+rooms.df <- data.frame(rooms=c(0), Freq=c(0))
+rooms.df <- rbind(rooms.df, data.frame(table(rooms)))
+rooms.df$rooms <- factor(rooms.df$rooms, levels=rooms.df$rooms)
+ggplot(rooms.df, aes(x=rooms, y=Freq)) +
+  geom_bar(stat="identity") +
+  labs(title="Suite demand distribution", x="Suite Demand", y="Frequency")
+@ 
+
+We calculate the sample mean, $\overline{X}$ to be \Sexpr{mean(rooms)}.
+Since $\overline{X}$ is an unbiased estimator of $\mu$, and for the binomial distribution, $\mu = n \theta$, we find that $\theta = \frac{\mu}{n} = \frac{6.055}{10} = 0.6055$
+
+
+For a hotel configuration based on number of suites, $S \in [0, 1, 2, \hdots, 10]$ and regular rooms, $20 - 2S$, 
+we are given $R_{suite}$, the revenue for a booked suite, $R_{room}$, the revenue for a booked room, $U_{suite}$, the unbooked suite cost, and $V_{suite}$, the unavailable suite cost. 
+However, we are not given the costs for an unbooked or unavailable regular room, so we will have to estimate it based on the information we have for suites. 
+
+\begin{equation}
+\begin{split}
+  R_{suite} &= 285.00 \\
+  R_{room} &= 85.00 \\
+  U_{suite} &= -150.00 \\
+  V_{suite} &= -190.00 \\
+  U_{room} &= R_{room} \bigg( \frac{U_{suite}}{R_{suite}} \bigg) \approx -45.00 \\
+  V_{room} &= R_{room} \bigg( \frac{V_{suite}}{R_{suite}} \bigg) \approx -57.00 \\
+\end{split}
+\end{equation}
+
+We now make the assumption that for any number of regular rooms, that is, $S < 10$, the regular rooms will always be fully booked. 
+
+Our revenue loss function, $L$, is parameterized by $\alpha$, the number of suites available.
+
+\begin{equation}
+  L(x; \alpha) = \begin{cases}
+         (x - \alpha) U_{suites} &\text{if } x \geq \alpha \\
+         |(x - \alpha)| V_{suites} &\text{if } x < \alpha
+       \end{cases}
+\end{equation}
+
+Then our profit for any configuration of S is the profits of the suites and rooms, minus the cost of underbooked or overbooked suites.
+
+\begin{equation}
+\begin{split}
+  Y &= min(X, S) \cdot R_{suite} + (20 - 2S) \cdot R_{room} + L_{suite}\big(X; S \big) \\
+\end{split}
+\end{equation}
+
+To see how $Y$ behaves under the various configurations, we simulate 100,000 draws from $Bin(10, 0.6055)$, and calculate $Y$ under each configuration. 
+We then take the mean, $\overline{Y}$ under each configuration and plot our results.
+
+
+<<echo=F, cache=T>>=
+# Loss function for suites
+L <- function(x, alpha) {
+  ifelse(x >= alpha, return((x - alpha) * U.suite), return(abs(x - alpha) * V.suite))
+}
+
+Y <- function(x, s) {
+  return(pmin(x, s) * R.suite + ((20 - 2 * s) * R.room) + L(x, s))
+}
+
+sim.df <- data.frame(X=X)
+suites.sim.df <- sim.df
+suites.loss.sim.df <- sim.df
+
+for (i in 0:10) {
+  S <- i
+  alpha <- S
+  room.count <- rep(20 - (2 * S), 100000)
+
+  # Naive assumption: Rooms are fully booked, however many there are 
+  #suites.sim.df <- cbind(suites.sim.df, ifelse(X >= alpha, 
+                                                #((X - S) * U.suite), 
+                                                #((X - S) * V.suite)))
+  suites.sim.df <- cbind(suites.sim.df, Y(X, alpha))
+  suites.loss.sim.df <- cbind(suites.loss.sim.df, L(X, alpha))
+}
+
+colnames(suites.sim.df) <- c('suite.demand', 'profit.0', 'profit.1', 'profit.2', 'profit.3', 'profit.4', 'profit.5', 'profit.6', 'profit.7', 'profit.8', 'profit.9', 'profit.10')
+colnames(suites.loss.sim.df) <- c('suite.demand', 'profit.0', 'profit.1', 'profit.2', 'profit.3', 'profit.4', 'profit.5', 'profit.6', 'profit.7', 'profit.8', 'profit.9', 'profit.10')
+
+res.df <- as.data.frame(colMeans(suites.sim.df), stringsAsFactors=F)
+res.loss.df <- as.data.frame(colMeans(suites.loss.sim.df), stringsAsFactors=F)
+
+res.df <- cbind(res.df, names(colMeans(suites.sim.df)))
+res.loss.df <- cbind(res.loss.df, names(colMeans(suites.loss.sim.df)))
+
+colnames(res.df) <- c('Profit', 'Suite.Demand')
+colnames(res.loss.df) <- c('Loss', 'Suite.Demand')
+
+res.df <- res.df %>% filter(Suite.Demand != 'suite.demand')
+res.loss.df <- res.loss.df %>% filter(Suite.Demand != 'suite.demand')
+
+res.df$Suite.Demand  <- as.character(res.df$Suite.Demand)
+res.loss.df$Suite.Demand  <- as.character(res.loss.df$Suite.Demand)
+
+res.df$Suite.Demand <- gsub("profit.", "", res.df$Suite.Demand)
+res.loss.df$Suite.Demand <- gsub("profit.", "", res.loss.df$Suite.Demand)
+
+res.df$Suite.Demand <- factor(res.df$Suite.Demand, levels=res.df$Suite.Demand)
+res.loss.df$Suite.Demand <- factor(res.loss.df$Suite.Demand, levels=res.loss.df$Suite.Demand)
+
+@
+
+<<assumption1, echo=F, fig.height=2, fig.width=4, fig.align='center', fig.pos='H', fig.cap="Expected profits with each configuration, and the naive assumption that all regular rooms are always filled. The red and green bars highlight the worst and best configurations, respectively.">>=
+ggplot(res.df, aes(x=Suite.Demand, y=Profit)) +
+  geom_bar(stat="identity") +
+  geom_bar(data=subset(res.df, Profit==min(Profit)), aes(Suite.Demand, Profit), fill="red", stat="identity") +
+  geom_bar(data=subset(res.df, Profit==max(Profit)), aes(Suite.Demand, Profit), fill="green", stat="identity") +
+  # geom_line(data=res.loss.df, aes(x=Suite.Demand, y=Loss, group=1), stat="identity") +
+  labs(x="Suite Configuration", y="Expected Profit") 
+@
+
+With the assumption that regular rooms are always fully booked under any configuration $S < 10$, we see profits steadily
+rise the more suites we add until they peak at 8 suites. They slightly decline if we add a 9th or 10th suite.
+
+
+\section{Generalizing the model}
+
+While it would be nice if there was a constant demand for rooms, in reality this is not the case. To get a more accurate recommendation,
+we can relax the first assumption by generalizing the model.
+
+Since we are missing some crucial data to make an optimal recommendation, we must make some further assumptions.
+
+\begin{enumerate}
+  \item What is the demand distribution for regular rooms?
+  \item If a suite is not available but a room is, what is the probability that guests will downgrade to a regular room versus booking with a competitor?
+  \item If a regular room is not available but a suite is, what is the probability the guest will upgrade to a suite, versus booking with a competitor?
+\end{enumerate}
+
+The number of those wishing to book suites remains $X$ as defined before. Now, let $W$ be the number wishing to book regular rooms, then we have
+
+\begin{equation}
+\begin{split}
+  W &\sim Bin(n, \theta_1) \\
+\end{split}
+\end{equation}
+
+We have no data with which to estimate $\theta_1$, so instead, we'll fix $n$ to be 20, the maximum number of rooms if we build no suites, and simulate with $\theta_1 \in [0, 0.1, 0.2, \hdots, 1]$. 
+
+We generalize our loss function, $L$ with parameter $\omega$, which represents either rooms or suites. $\alpha$ is the number of rooms or suites available, respective of $\omega$.
+
+\begin{equation}
+  L_{\omega}(x; \alpha) = \begin{cases}
+            (x - \alpha) U_{\omega} &\text{if } x \geq \alpha \\
+            |(x - \alpha)| V_{\omega} &\text{if } x < \alpha
+          \end{cases}
+\end{equation}
+
+If we have more guests, $X$, than available suites, $S$, we define $X^{\prime}$ as the \textit{overflow} - the number of suite guests we cannot accommodate. Likewise, for $W$ regular room guests, 
+we define $W^{\prime}$ as the overflow of regular room guests.
+
+\begin{equation}
+\begin{split}
+  X^{\prime} &= max(0, X - S) \\
+  W^{\prime} &= max(0, W - (20 - 2S)) \\
+\end{split}
+\end{equation}
+
+Another assumption that we can make is that the overflow population would be willing to downgrade to a regular room with probability $\theta_2$, or upgrade to a suite with probability $\theta_3$, 
+for populations $X^{\prime}$ and $W^{\prime}$ respectively. We can then define new random variables $X^{\prime \prime}$ and $W^{\prime \prime}$ as those from the overflow willing to switch room types.
+
+\begin{equation}
+\begin{split}
+  X^{\prime \prime} &\sim Bin(X^{\prime}, \theta_2) \\
+  W^{\prime \prime} &\sim Bin(W^{\prime}, \theta_3) \\
+\end{split}
+\end{equation}
+
+
+Thus, we arrive at the model,
+
+\begin{equation}
+\begin{split}
+  Y &= min\big((X + W^{\prime \prime}), S \big) \cdot R_{suite} + min\big((W + X^{\prime \prime}), (20 - 2S) \big) \cdot R_{room} \\
+    &+ \big[ L_{suite}\big(X + W^{\prime \prime}; S \big) + L_{room}\big(W + X^{\prime \prime}; (20 - 2S)\big) \big] \\
+\end{split}
+\end{equation}
+
+
+<<echo=F, cache=F>>=
+# Simulated nights (number of suite requests)
+suites.sim <- rbinom(100000, 10, (mean(rooms) / 10))
+
+y.df <- data.frame(suite.demand=suites.sim)
+
+# Generate different values of W for different probabilities of theta.1
+
+# Loss function
+L <- function(x, omega, alpha) {
+  if (omega == 'suites') {
+    ifelse(x >= alpha, return((x - alpha) * U.suite), return(abs(x - alpha) * V.suite))
+  }
+  else if (omega == 'rooms') {
+    ifelse(x >= alpha, return((x - alpha) * U.room), return(abs(x - alpha) * V.room))
+  }
+}
+
+# Profit function
+Y <- function(x, w, x.prime.prime, w.prime.prime, s) {
+  return(pmin((x + w.prime.prime), s) * R.suite + pmin((w + x.prime.prime), (20 - 2 * s)) * R.room + (L(x + w.prime.prime, 'suites', s) + L(w + x.prime.prime, 'rooms', (20 - 2 * s))))
+}
+
+@
+
+
+<<echo=F, cache=T>>=
+
+# n.1 and theta.1 is binomial demand for rooms
+# theta.2 is the likelihood someone wanting a suite will downgrade to a regular room
+# theta.3 Probability that someone wanting a room is willing to upgrade to a suite
+answer <- function(n.1, theta.1, theta.2, theta.3) {
+  sim.df <- data.frame(X=X)
+  suites.profit.sim.df <- sim.df
+  suites.loss.sim.df <- sim.df
+  
+  # For now, let's say room demand is same as suite demand (unlikely)
+  y.df <- cbind(y.df, room.demand=rbinom(100000, n.1, theta.1))
+  
+  for (S in 0:10) {
+    
+    alpha <- S
+    room.count <- rep(20 - (2 * S), 100000)
+  
+    # Suite overflow population
+    X.prime <- pmax(0, (y.df$suite.demand - S))
+  
+    # XXX: We could take the expected value, np, or a random draw from the binomial 
+    
+    # X'' = the number of people in the suite overflow willing to downgrae to rooms  
+    xpp <- rbinom(rep(1, 100000), X.prime, theta.2)
+  
+    # Room overflow population
+    W.prime <- pmax(0, (y.df$room.demand - (20 - 2*S)))
+  
+    
+    # W'' = the number of people in the room overflow willing to upgrade to suites  
+    wpp <- rbinom(rep(1, 1000000), W.prime, theta.3)
+  
+    #suites.sim.df <- cbind(suites.sim.df, Y(X, alpha))
+    #suites.loss.sim.df <- cbind(suites.loss.sim.df, L(X, alpha))
+  
+    suites.profit.sim.df <- cbind(suites.profit.sim.df, Y(y.df$suite.demand, y.df$room.demand, xpp, wpp, S))
+    # suites.loss.sim.df <- cbind(suites.loss.sim.df, L(y.df$suite.demand, 'suite', S) + L(y.df$room.demand.6, 'room', S))
+  }
+  colnames(suites.profit.sim.df) <- c('Suite.Demand', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10')
+  
+  
+  res.df <- as.data.frame(colMeans(suites.profit.sim.df), stringsAsFactors=F)
+  
+  res.df <- cbind(res.df, rownames(res.df))
+  colnames(res.df) <- c('Profit', 'Suite.Demand')
+  res.df <- res.df %>% filter(Suite.Demand != 'Suite.Demand')
+  
+  
+  res.df$Suite.Demand  <- as.character(res.df$Suite.Demand)
+  res.df$Suite.Demand <- gsub("profit.", "", res.df$Suite.Demand)
+  res.df$Suite.Demand <- factor(res.df$Suite.Demand, levels=res.df$Suite.Demand)
+  return(res.df)
+}
+
+n.1 <- 20
+theta.1 <- .5
+theta.2 <- .4
+theta.3 <- .1
+res.df <- answer(n.1, theta.1, theta.2, theta.3)
+
+fig.caption <- paste0("Expected profits with each suite configuration, under the general model with average room demand, $\\theta_1 = ", theta.1, ", \\theta_2 = ", theta.2, ", \\theta_3 = ", theta.3 , "$")
+@
+
+<<generalmodel1, echo=F, fig.height=2, fig.width=4, fig.align='center', fig.pos='H', fig.cap=fig.caption>>=
+ggplot(res.df, aes(x=Suite.Demand, y=Profit)) +
+  geom_bar(stat="identity") +
+  geom_bar(data=subset(res.df, Profit==min(Profit)), aes(Suite.Demand, Profit), fill="red", stat="identity") +
+  geom_bar(data=subset(res.df, Profit==max(Profit)), aes(Suite.Demand, Profit), fill="green", stat="identity") +
+  # geom_line(data=res.loss.df, aes(x=Suite.Demand, y=Loss, group=1), stat="identity") +
+  labs(x="Suite Configuration", y="Expected Profit") 
+
+@
+
+<<echo=F, cache=T>>=
+n.1 <- 20
+theta.1 <- .1
+theta.2 <- .4
+theta.3 <- .1
+res.df <- answer(n.1, theta.1, theta.2, theta.3)
+
+fig.caption <- paste0("Expected profits with each suite configuration, under the general model with weak room demand $\\theta_1 = ", theta.1, ", \\theta_2 = ", theta.2, ", \\theta_3 = ", theta.3 , "$")
+@
+
+<<generalmodel2, echo=F, fig.height=2, fig.width=4, fig.align='center', fig.pos='H', fig.cap=fig.caption>>=
+ggplot(res.df, aes(x=Suite.Demand, y=Profit)) +
+  geom_bar(stat="identity") +
+  geom_bar(data=subset(res.df, Profit==min(Profit)), aes(Suite.Demand, Profit), fill="red", stat="identity") +
+  geom_bar(data=subset(res.df, Profit==max(Profit)), aes(Suite.Demand, Profit), fill="green", stat="identity") +
+  # geom_line(data=res.loss.df, aes(x=Suite.Demand, y=Loss, group=1), stat="identity") +
+  labs(x="Suite Configuration", y="Expected Profit") 
+
+@
+
+<<echo=F, cache=T>>=
+n.1 <- 20
+theta.1 <- .7
+theta.2 <- .4
+theta.3 <- .1
+res.df <- answer(n.1, theta.1, theta.2, theta.3)
+
+fig.caption <- paste0("Expected profits with each suite configuration, under the general model with heavy room demand $\\theta_1 = ", theta.1, ", \\theta_2 = ", theta.2, ", \\theta_3 = ", theta.3 , "$")
+@
+
+<<generalmodel3, echo=F, fig.height=2, fig.width=4, fig.align='center', fig.pos='H', fig.cap=fig.caption>>=
+ggplot(res.df, aes(x=Suite.Demand, y=Profit)) +
+  geom_bar(stat="identity") +
+  geom_bar(data=subset(res.df, Profit==min(Profit)), aes(Suite.Demand, Profit), fill="red", stat="identity") +
+  geom_bar(data=subset(res.df, Profit==max(Profit)), aes(Suite.Demand, Profit), fill="green", stat="identity") +
+  # geom_line(data=res.loss.df, aes(x=Suite.Demand, y=Loss, group=1), stat="identity") +
+  labs(x="Suite Configuration", y="Expected Profit") 
+
+@
+%Sets the bibliography style to UNSRT and imports the 
+%bibliography file "samples.bib".
+\bibliographystyle{unsrt}
+\bibliography{deliverable2}
+
+\end{document}
